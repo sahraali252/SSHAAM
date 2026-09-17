@@ -1,2 +1,2 @@
-# soen-341
+# SAAM
 Repository for our software engineering project
