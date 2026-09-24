@@ -5,7 +5,6 @@
 **Project:** CareerConnect  
 **Date:** [YYYY-MM-DD]  
 **Time:** [Start Time - End Time]  
-**Meeting Type:** [Team Meeting / Client Meeting / Other]
 
 ---
 
