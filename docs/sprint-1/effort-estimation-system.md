@@ -19,7 +19,6 @@ If two team members each work for three hours, the total effort is six hours.
 ## Estimation rules
 - Estimate implementation, testing, review, and documentation work.
 - Use total person-hours when more than one member works on an item.
-- Estimate only work planned for Sprint 1.
 - Review estimates during team meetings if the scope changes.
 - Record the chosen effort level in the Sprint 1 Plan view.
 
