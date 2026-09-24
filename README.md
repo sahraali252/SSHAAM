@@ -16,10 +16,10 @@ CareerConnect provides a centralized platform where job seekers can organize and
 
 - Sara Noori Student Id number:40224277
 - Hiba Tydrini  Student Id number:40348854
-- [Member 3 Name]
-- [Member 4 Name]
-- [Member 5 Name]
-- [Member 6 Name]
+- Aya Lakhoitri Student Id number: 40330319
+- Melissa Luk Student Id number: 40089387
+- Sahra Ali Student Id number: 
+- Amine Ait Yakoub Student Id number: 
 
 ## Technologies
 
