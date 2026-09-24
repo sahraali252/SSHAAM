@@ -40,14 +40,14 @@
 
 | Action Item | Responsible Team Member | Deadline | Status |
 |-------------|-------------------------|----------|--------|
-| Github setup and initialization | Sahra Ali, Aya Lakhoitri, Melissa Luk | 2026-09-24 | Started |
-| README File | [Name] | Sahra Ali | Not Started |
-| Sprint Planning | [Name] | 2026-09-24 | Not Started |
+| Github setup and initialization | Sahra Ali, Aya Lakhoitri, Melissa Luk | 2026-09-24 | Done |
+| README File | Sahra Ali, Sara Noori | 2026-09-28 | Started |
+| Sprint Planning | Aya Lakhoitri, Melissa Luk | 2026-09-24 | Done |
 | User Stories and Task Breakdown | [Name] | 2026-09-24 | Not Started |
 | Team Process Definition | [Name] | [Date] | Not Started |
-| AI Usage Log | [Name] | [Date] | Not Started |
-| Meeting Minutes | [Name] | 2026-09-24 | Not Started |
-| Code Demonstration | [Name] | Amine Ait Yakoub, Sahra Ali, Sara Noori, Hiba Tydrini  | Not Started |
+| AI Usage Log | Sahra Ali | 2026-09-28 | Not Started |
+| Meeting Minutes | Melissa Luk | 2026-09-24 | Done |
+| Code Demonstration | Amine Ait Yakoub, Sahra Ali, Sara Noori, Hiba Tydrini | 20256-09-28 | Not Started |
 
 ---
 
@@ -59,8 +59,7 @@
 
 ## Next Meeting
 
-**Date:** [2026-09-24]  
-**Time:** [Time]  
+**Date:** [2026-09-27]  
+**Time:** [1:00 PM]  
 **Planned Topics:**
-- [Topic 1]
-- [Topic 2]
+- Code demonstration
