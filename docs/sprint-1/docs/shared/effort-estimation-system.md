@@ -1,7 +1,7 @@
-# Sprint 1 Effort Estimation System
+# CareerConnect Effort Estimation System
 
 ## Purpose
-This system helps the CareerConnect team estimate how much work each Sprint 1 item requires.
+This system helps the CareerConnect team estimate how much work each planned item requires across all Sprints.
 
 ## Estimation unit
 Effort is estimated in total person-hours.
