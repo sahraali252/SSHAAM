@@ -14,8 +14,8 @@ CareerConnect provides a centralized platform where job seekers can organize and
 
 ## Team Members
 
-- Sara Noori Student Id number:40224277
-- Hiba Tydrini  Student Id number:40348854
+- Sara Noori Student Id number: 40224277
+- Hiba Tydrini  Student Id number: 40348854
 - Aya Lakhoitri Student Id number: 40330319
 - Melissa Luk Student Id number: 40089387
 - Sahra Ali Student Id number: 
