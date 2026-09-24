@@ -20,5 +20,4 @@
 
 Total Sprint hours per member: 26 hours
 
-```text
-Available hours per week × number of Sprint weeks
+
