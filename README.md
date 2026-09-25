@@ -57,3 +57,12 @@ CareerConnect provides a centralized platform where job seekers can organize and
 ## Setup Instructions
 
 Setup instructions will be updated once the development environment and technologies are finalized.
+
+
+
+## Local Setup
+1. cd backend
+2. python -m venv venv
+3. source venv/bin/activate  (Mac/Linux) or venv\Scripts\activate  (Windows)
+4. pip install -r requirements.txt
+5. uvicorn app.main:app --reload
