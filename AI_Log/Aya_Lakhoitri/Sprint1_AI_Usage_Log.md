@@ -1,4 +1,4 @@
-# Sprint 1 AI Usage Log — Member 1
+# Sprint 1 AI Usage Log — Aya Lakhoitri
 
 ## 1. AI Tools Used
 
