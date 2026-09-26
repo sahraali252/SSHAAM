@@ -46,7 +46,9 @@ CareerConnect provides a centralized platform where job seekers can organize and
 - Git
 - GitHub
 
-## Proposed Features
+## Team-Generated User Stories and Features
+
+### Features
 
 - User registration and authentication
 - User profile management
@@ -60,6 +62,24 @@ CareerConnect provides a centralized platform where job seekers can organize and
 - Saved jobs and favourites
 - Generative AI feature
 - Additional original team feature
+
+### User Stories
+
+- **US-01 — User Registration:** As a job seeker, I want to create an account so that I can access CareerConnect platform features.
+- **US-02 — User Login:** As a registered user, I want to log in securely so that I can access my CareerConnect account.
+- **US-03 — Manage User Profile:** As a job seeker, I want to create and update my profile so that I can maintain accurate career information.
+- **US-04 — Upload Resume:** As a job seeker, I want to upload my resume so that I can manage my application materials on CareerConnect.
+- **US-05 — Manage Resume:** As a job seeker, I want to manage my uploaded resume so that I can keep my application materials up to date.
+- **US-06 — Search for Jobs:** As a job seeker, I want to search for job opportunities so that I can find positions relevant to my career goals.
+- **US-07 — Filter Job Search Results:** As a job seeker, I want to filter job search results so that I can narrow down opportunities that match my preferences.
+- **US-08 — View Job Details:** As a job seeker, I want to view detailed information about a job so that I can decide whether to apply.
+- **US-09 — Submit Job Application:** As a job seeker, I want to submit a job application so that I can apply for opportunities through CareerConnect.
+- **US-10 — Track Application Status:** As a job seeker, I want to track my application status so that I can monitor the progress of my job applications.
+- **US-11 — View Application History:** As a job seeker, I want to view my application history so that I can keep track of jobs I have applied for.
+- **US-12 — Receive Application Notifications:** As a job seeker, I want to receive notifications about my applications so that I can stay informed about important updates.
+- **US-13 — Save Favorite Jobs:** As a job seeker, I want to save jobs as favourites so that I can easily return to opportunities I am interested in.
+- **US-14 — Create Job Posting:** As a recruiter, I want to create a job posting so that I can advertise an available position to job seekers.
+- **US-15 — AI-Assisted Resume Feedback:** As a job seeker, I want to receive AI-assisted feedback on my resume so that I can identify areas for improvement.
 
 ## Setup Instructions
 
