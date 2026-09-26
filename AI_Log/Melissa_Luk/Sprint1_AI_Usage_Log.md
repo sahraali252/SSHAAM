@@ -49,11 +49,3 @@ Describe how the AI-generated output was checked.
 |---|---|---|
 | | Used / Modified / Rejected | |
 
-## 6. Lab Review Notes
-
-- What AI tool(s) were used?
-- What was AI used for?
-- What prompts were used?
-- What did AI generate?
-- How was the output validated?
-- What was ultimately accepted, modified, or rejected?
