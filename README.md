@@ -81,14 +81,49 @@ CareerConnect provides a centralized platform where job seekers can organize and
 - **US-14 — Create Job Posting:** As a recruiter, I want to create a job posting so that I can advertise an available position to job seekers.
 - **US-15 — AI-Assisted Resume Feedback:** As a job seeker, I want to receive AI-assisted feedback on my resume so that I can identify areas for improvement.
 
-## Setup Instructions
-
-Setup instructions will be updated once the development environment and technologies are finalized.
-
-
-
 ## Local Setup
-1. cd backend
-2. python -m venv venv
-3. source venv/bin/activate  (Mac/Linux) or venv\Scripts\activate  (Windows)
-4. pip install -r requirements.txt
+
+1. Clone the repository and open the backend folder:
+
+   ```bash
+   git clone https://github.com/sahraali252/SSHAAM.git
+   cd SSHAAM/backend
+   ```
+
+2. Create a Python virtual environment:
+
+   ```bash
+   python3 -m venv venv
+   ```
+
+3. Activate the virtual environment:
+
+   ```bash
+   source venv/bin/activate
+   ```
+
+4. Install the required backend packages:
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+5. Create your local environment file:
+
+   ```bash
+   cp .env.example .env
+   ```
+
+   Ask the team for the required `DATABASE_URL`, `SUPABASE_URL`, and `SUPABASE_KEY` values, then add them to `.env`. Never upload the `.env` file to GitHub.
+
+6. Start the backend server:
+
+   ```bash
+   uvicorn app.main:app --reload
+   ```
+
+7. Open the API documentation in your browser:
+
+   ```text
+   http://127.0.0.1:8000/docs
+   ```
