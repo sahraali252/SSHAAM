@@ -14,12 +14,14 @@ CareerConnect provides a centralized platform where job seekers can organize and
 
 ## Team Members
 
-- Sara Noori Student Id number: 40224277
-- Hiba Tydrini  Student Id number: 40348854
-- Aya Lakhoitri Student Id number: 40330319
-- Melissa Luk Student Id number: 40089387
-- Sahra Ali Student Id number: 
-- Amine Ait Yakoub Student Id number: 
+| Name | Student ID |
+|------|------------|
+| Sara Noori | 40224277 |
+| Sahra Ali | 40328476 |
+| Hiba Tydrini | 40348854 |
+| Aya Lakhoitri | 40330319 |
+| Amine Ait Yakoub | TBD |
+| Melissa Luk | 40089387 |
 
 ## Technologies
 
@@ -30,10 +32,15 @@ CareerConnect provides a centralized platform where job seekers can organize and
 - CSS
 
 ### Backend
-- TBD
+- Python
+- FastAPI
+- SQLAlchemy
+- Pydantic
 
-### Database
-- TBD
+### Database and Storage
+- PostgreSQL
+- Supabase
+- Supabase Storage
 
 ### Development Tools
 - Git
