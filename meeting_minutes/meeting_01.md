@@ -12,8 +12,8 @@
 
 | First Name | Last Name | Student ID | Attendance |
 |------------|-----------|------------|------------|
-| Amine | Ait Yakoub | [Student ID] | Present |
-| Sahra | Ali | [Student ID] | Present |
+| Amine | Ait Yakoub | 40315369 | Present |
+| Sahra | Ali | 40328476 | Present |
 | Aya | Lakhoitri | 40330319 | Present |
 | Melissa | Luk| 40089387 | Present |
 | Sara | Noori | 40224277 | Present |
