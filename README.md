@@ -20,7 +20,7 @@ CareerConnect provides a centralized platform where job seekers can organize and
 | Sahra Ali | 40328476 |
 | Hiba Tydrini | 40348854 |
 | Aya Lakhoitri | 40330319 |
-| Amine Ait Yakoub | TBD |
+| Amine Ait Yakoub | 40315369 |
 | Melissa Luk | 40089387 |
 
 ## Technologies
