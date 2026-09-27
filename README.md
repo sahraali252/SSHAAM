@@ -92,16 +92,38 @@ CareerConnect provides a centralized platform where job seekers can organize and
 
 2. Create a Python virtual environment:
 
+   **Mac/Linux:**
+
    ```bash
    python3 -m venv venv
    ```
 
+   **Windows:**
+
+   ```bash
+   python -m venv venv
+   ```
+
 3. Activate the virtual environment:
+
+   **Mac/Linux:**
 
    ```bash
    source venv/bin/activate
    ```
 
+   **Windows PowerShell:**
+
+   ```powershell
+   venv\Scripts\Activate.ps1
+   ```
+
+   **Windows Command Prompt:**
+
+   ```bat
+   venv\Scripts\activate.bat
+   ```
+   
 4. Install the required backend packages:
 
    ```bash
