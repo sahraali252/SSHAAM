@@ -4,7 +4,7 @@
 
 | AI Tool | Purpose | Date |
 |---|---|---|
-| ChatGPT Codex | Help with Git, Learning Git and GitHub basis (since i had no prior experience) GitHub pull requests, backend setup, README documentation, and Sprint 1 submission planning. | September 26–27, 2026 |
+| ChatGPT Codex | Help with Git, Learning Git and GitHub basis (since i had no prior experience) GitHub pull requests, backend setup, README documentation, and Sprint 1 submission planning. | September 22–27, 2026 |
 
 ## 2. Prompts Used
 
