@@ -12,7 +12,7 @@
 
 | First Name | Last Name | Student ID | Attendance |
 |------------|-----------|------------|------------|
-| Saara | Noori | 40224277 | Absent |
+| Sara | Noori | 40224277 | Absent |
 | Sahra | Ali | 40328476 | Present |
 | Hiba | Tyridini | 40348854 | Absent |
 | Aya| Lakhoitri| 40330319 | Present |
