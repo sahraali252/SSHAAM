@@ -17,7 +17,6 @@ router = APIRouter(
     tags=["Resumes"]
 )
 
-
 @router.post("/upload")
 async def upload_resume(file: UploadFile = File(...)):
     if file.content_type != "application/pdf":
@@ -27,7 +26,6 @@ async def upload_resume(file: UploadFile = File(...)):
         )
 
     file_bytes = await file.read()
-
     unique_filename = f"{uuid.uuid4()}_{file.filename}"
 
     try:

@@ -1,11 +1,13 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Auth.css";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,12 +34,24 @@ function Login() {
       const data = await response.json();
 
       if (response.ok) {
-        setMessage("Login successful!");
         console.log("Logged in user:", data);
+
+        // Save user information if returned by the backend
+        if (data.user_id) {
+          localStorage.setItem("user_id", data.user_id);
+        }
+
+        if (data.email) {
+          localStorage.setItem("user_email", data.email);
+        }
+
+        // Go to resume upload page
+        navigate("/resume-upload");
       } else {
         setMessage(data.detail || "Invalid email or password.");
       }
     } catch (error) {
+      console.error("Login error:", error);
       setMessage("Unable to connect to the server.");
     }
   };
