@@ -12,15 +12,17 @@ According to the AI Usage Logs README:
 
 | Team Member | Individual Folder | Sprint 1 PDF | Status |
 |---|---|---|---|
-| Sahra Ali | Missing | Missing | Not submitted |
-| Sara Noori | Missing | Missing | Not submitted |
-| Hiba Tydrini | Missing | Missing | Not submitted |
-| Amine Ait Yakoub | Missing | Missing | Not submitted |
-| Aya Lakhoitri | Missing | Missing | Not submitted |
-| Melissa Luk | Missing | Missing | Not submitted |
+| Sahra Ali | Done| Done | Submit |
+| Sara Noori | Done | Done | Submit |
+| Hiba Tydrini | Done | Done | Submit |
+| Amine Ait Yakoub | Done | Done | Submit |
+| Aya Lakhoitri | Done | Done | Submit |
+| Melissa Luk | Done | Done | Submit |
 
 ## Audit Result
 
 At the time of this audit, the AI_Log folder contains only the README.md file. No individual member folders or Sprint 1 PDF reports were present.
 
 The team should upload the required AI usage logs before the Sprint 1 submission is finalized.
+
+The team submitted their individual AI logs for Sprint 1.
