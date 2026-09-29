@@ -146,6 +146,10 @@ CareerConnect provides a centralized platform where job seekers can organize and
 
 7. Open the API documentation in your browser:
 
+## GitHub Repository
+
+https://github.com/sahraali252/SSHAAM
+
    ```text
    http://127.0.0.1:8000/docs
    ```
