@@ -65,10 +65,10 @@ CareerConnect provides a centralized platform where job seekers can organize and
 
 ### User Stories
 
-- **US-01 — User Registration:** As a job seeker, I want to create an account so that I can access CareerConnect platform features.
-- **US-02 — User Login:** As a registered user, I want to log in securely so that I can access my CareerConnect account.
+- **US-01 — User Registration / Login:** As a job seeker, I want to create an account so that I can access CareerConnect platform features.
+- **US-02 — Upload a Resume:** As a job seeker, I want to upload my resume so that I can manage my application materials on CareerConnect.
 - **US-03 — Manage User Profile:** As a job seeker, I want to create and update my profile so that I can maintain accurate career information.
-- **US-04 — Upload Resume:** As a job seeker, I want to upload my resume so that I can manage my application materials on CareerConnect.
+- **US-04 — Contact Employer:** As a job seeker, I want to contact an employer through the platform so I can ask questions about the job opportunity.
 - **US-05 — Manage Resume:** As a job seeker, I want to manage my uploaded resume so that I can keep my application materials up to date.
 - **US-06 — Search for Jobs:** As a job seeker, I want to search for job opportunities so that I can find positions relevant to my career goals.
 - **US-07 — Filter Job Search Results:** As a job seeker, I want to filter job search results so that I can narrow down opportunities that match my preferences.
