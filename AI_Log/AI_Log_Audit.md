@@ -12,12 +12,12 @@ According to the AI Usage Logs README:
 
 | Team Member | Individual Folder | Sprint 1 PDF | Status |
 |---|---|---|---|
-| Sahra Ali | Done| Done | Submit |
-| Sara Noori | Done | Done | Submit |
-| Hiba Tydrini | Done | Done | Submit |
-| Amine Ait Yakoub | Done | Done | Submit |
-| Aya Lakhoitri | Done | Done | Submit |
-| Melissa Luk | Done | Done | Submit |
+| Sahra Ali | Done| Done | Submitted |
+| Sara Noori | Done | Done | Submitted |
+| Hiba Tydrini | Done | Done | Submitted |
+| Amine Ait Yakoub | Done | Done | Submitted |
+| Aya Lakhoitri | Done | Done | Submitted |
+| Melissa Luk | Done | Done | Submitted |
 
 ## Audit Result
 
