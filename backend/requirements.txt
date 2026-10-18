@@ -9,4 +9,5 @@ supabase
 python-dotenv
 pydantic[email]
 python-multipart
-
+passlib[bcrypt]
+bcrypt==4.0.1
