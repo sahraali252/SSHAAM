@@ -1,8 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.routers import auth_router, resume_router
-
+from app.routers import auth_router, resume_router, jobs_router
 app = FastAPI()
 
 app.add_middleware(
@@ -15,6 +14,7 @@ app.add_middleware(
 # Connect authentication routes to the FastAPI app
 app.include_router(auth_router.router)
 app.include_router(resume_router.router)
+app.include_router(jobs_router.router)
 
 @app.get("/")
 def root():
