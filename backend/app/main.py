@@ -1,18 +1,25 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.routers import auth_router, resume_router, jobs_router
+from app import models
+from app.database import Base, engine
+from app.routers import auth_router, profile_router, resume_router, jobs_router
+
 app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],   # allows any frontend/domain to make requests
-    allow_methods=["*"],   # allows GET, POST, PUT, DELETE, etc.
-    allow_headers=["*"],   # allows headers such as Content-Type
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
-# Connect authentication routes to the FastAPI app
+@app.on_event("startup")
+def create_database_tables():
+    Base.metadata.create_all(bind=engine)
+
 app.include_router(auth_router.router)
+app.include_router(profile_router.router)
 app.include_router(resume_router.router)
 app.include_router(jobs_router.router)
 

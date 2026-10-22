@@ -1,20 +1,60 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Auth.css";
+import "./ResumeUpload.css";
 
 function ResumeUpload() {
+  const navigate = useNavigate();
+  const userId = localStorage.getItem("user_id");
+
+  const [resume, setResume] = useState(null);
   const [file, setFile] = useState(null);
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [inputKey, setInputKey] = useState(0);
 
-  const navigate = useNavigate();
+  useEffect(() => {
+    if (!userId) {
+      navigate("/login");
+      return;
+    }
 
-  const handleUpload = async (e) => {
-    e.preventDefault();
+    loadResume();
+  }, [userId, navigate]);
+
+  const loadResume = async () => {
+    try {
+      setLoading(true);
+
+      const response = await fetch(
+        `http://localhost:8000/resumes/${userId}`
+      );
+
+      if (response.status === 404) {
+        setResume(null);
+        return;
+      }
+
+      if (!response.ok) {
+        throw new Error("Could not load resume.");
+      }
+
+      const data = await response.json();
+      setResume(data);
+    } catch {
+      setMessage("Unable to load your resume.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleUpload = async (event) => {
+    event.preventDefault();
     setMessage("");
 
     if (!file) {
-      setMessage("Please select a PDF file.");
+      setMessage("Please choose a PDF file first.");
       return;
     }
 
@@ -30,7 +70,7 @@ function ResumeUpload() {
       setUploading(true);
 
       const response = await fetch(
-        "http://localhost:8000/resumes/upload",
+        `http://localhost:8000/resumes/${userId}`,
         {
           method: "POST",
           body: formData,
@@ -39,55 +79,185 @@ function ResumeUpload() {
 
       const data = await response.json();
 
-      if (response.ok) {
-        setMessage("Resume uploaded successfully!");
-        console.log("Uploaded resume:", data);
-      } else {
+      if (!response.ok) {
         setMessage(data.detail || "Resume upload failed.");
+        return;
       }
-    } catch (error) {
-      console.error("Upload error:", error);
+
+      setResume(data);
+      setFile(null);
+      setInputKey((currentKey) => currentKey + 1);
+      setMessage(
+        resume
+          ? "Your resume was replaced successfully."
+          : "Your resume was uploaded successfully."
+      );
+    } catch {
       setMessage("Unable to connect to the server.");
     } finally {
       setUploading(false);
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("user_id");
-    localStorage.removeItem("user_email");
-    navigate("/login");
+  const handleView = async () => {
+    setMessage("");
+
+    try {
+      const response = await fetch(
+        `http://localhost:8000/resumes/${userId}/view`
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setMessage(data.detail || "Unable to open the resume.");
+        return;
+      }
+
+      window.open(data.url, "_blank", "noopener,noreferrer");
+    } catch {
+      setMessage("Unable to open the resume.");
+    }
+  };
+
+  const handleDelete = async () => {
+    const shouldDelete = window.confirm(
+      "Delete your uploaded resume? This cannot be undone."
+    );
+
+    if (!shouldDelete) {
+      return;
+    }
+
+    try {
+      setDeleting(true);
+      setMessage("");
+
+      const response = await fetch(
+        `http://localhost:8000/resumes/${userId}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (!response.ok) {
+        const data = await response.json();
+        setMessage(data.detail || "Unable to delete the resume.");
+        return;
+      }
+
+      setResume(null);
+      setFile(null);
+      setInputKey((currentKey) => currentKey + 1);
+      setMessage("Your resume was deleted.");
+    } catch {
+      setMessage("Unable to connect to the server.");
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+  const formatFileSize = (bytes) => {
+    if (bytes < 1024 * 1024) {
+      return `${Math.ceil(bytes / 1024)} KB`;
+    }
+
+    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
   };
 
   return (
-    <div className="auth-page">
-      <div className="auth-card">
-        <h1>CareerConnect</h1>
-        <h2>Upload Resume</h2>
-
-        <p>Select your resume as a PDF file.</p>
-
-        <form onSubmit={handleUpload}>
-          <label>Resume</label>
-
-          <input
-            type="file"
-            accept=".pdf,application/pdf"
-            onChange={(e) => setFile(e.target.files[0])}
-          />
-
-          <button type="submit" disabled={uploading}>
-            {uploading ? "Uploading..." : "Upload Resume"}
-          </button>
-        </form>
-
-        {message && <p className="message">{message}</p>}
-
-        <button type="button" onClick={handleLogout}>
-          Logout
+    <main className="resume-page">
+      <section className="resume-card">
+        <button
+          className="back-link"
+          type="button"
+          onClick={() => navigate("/dashboard")}
+        >
+          ← Back to dashboard
         </button>
-      </div>
-    </div>
+
+        <p className="resume-eyebrow">RESUME MANAGEMENT</p>
+        <h1>Your resume</h1>
+        <p className="resume-introduction">
+          Upload one PDF resume. You can view, replace, or delete it at any
+          time.
+        </p>
+
+        {loading ? (
+          <p className="resume-loading">Loading your resume…</p>
+        ) : (
+          <>
+            {resume ? (
+              <section className="current-resume">
+                <div className="pdf-icon">PDF</div>
+
+                <div className="resume-details">
+                  <h2>{resume.original_filename}</h2>
+                  <p>
+                    Current resume · {formatFileSize(resume.file_size)}
+                  </p>
+                </div>
+
+                <div className="resume-actions">
+                  <button
+                    className="outline-button"
+                    type="button"
+                    onClick={handleView}
+                  >
+                    View resume
+                  </button>
+
+                  <button
+                    className="delete-button"
+                    type="button"
+                    onClick={handleDelete}
+                    disabled={deleting}
+                  >
+                    {deleting ? "Deleting..." : "Delete"}
+                  </button>
+                </div>
+              </section>
+            ) : (
+              <section className="empty-resume">
+                <span>📄</span>
+                <h2>No resume uploaded yet</h2>
+                <p>Choose a PDF below to add your first resume.</p>
+              </section>
+            )}
+
+            <form className="resume-form" onSubmit={handleUpload}>
+              <label htmlFor="resume-file">
+                {resume ? "Replace with a new PDF" : "Choose a PDF resume"}
+              </label>
+
+              <input
+                key={inputKey}
+                id="resume-file"
+                type="file"
+                accept=".pdf,application/pdf"
+                onChange={(event) => setFile(event.target.files[0])}
+              />
+
+              <p className="file-help">PDF only · Maximum file size: 5 MB</p>
+
+              <button
+                className="upload-button"
+                type="submit"
+                disabled={uploading}
+              >
+                {uploading
+                  ? "Saving resume..."
+                  : resume
+                    ? "Replace resume"
+                    : "Upload resume"}
+              </button>
+            </form>
+          </>
+        )}
+
+        {message && <p className="resume-message">{message}</p>}
+      </section>
+    </main>
   );
 }
 
