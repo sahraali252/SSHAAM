@@ -19,17 +19,19 @@ function Login() {
     }
 
     try {
-      const params = new URLSearchParams({
-        email,
-        password,
-      });
-
       const response = await fetch(
-        `http://localhost:8000/auth/login?${params.toString()}`,
-        {
-          method: "POST",
-        }
-      );
+  "http://localhost:8000/auth/login",
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      email,
+      password,
+    }),
+  }
+);
 
       const data = await response.json();
 
@@ -46,7 +48,7 @@ function Login() {
         }
 
         // Go to resume upload page
-        navigate("/resume-upload");
+navigate("/dashboard");
       } else {
         setMessage(data.detail || "Invalid email or password.");
       }
