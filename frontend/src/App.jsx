@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import Register from "./pages/Register";
 import ResumeUpload from "./pages/ResumeUpload";
+import JobSearch from "./pages/JobSearch";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/resume-upload" element={<ResumeUpload />} />
+        <Route path="/jobs" element={<JobSearch />} />
       </Routes>
     </BrowserRouter>
   );
