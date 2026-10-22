@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Dashboard.css";
@@ -77,7 +76,11 @@ function Dashboard() {
 
         <div className="header-actions">
           <span className="user-email">{userEmail}</span>
-          <button className="logout-button" onClick={handleLogout}>
+
+          <button
+            className="logout-button"
+            onClick={handleLogout}
+          >
             Log out
           </button>
         </div>
@@ -85,9 +88,11 @@ function Dashboard() {
 
       <section className="welcome-section">
         <p className="eyebrow">DASHBOARD</p>
+
         <h2>Welcome back!</h2>
+
         <p>
-          View your professional information and manage your resume
+          Manage your professional profile, resume, and job search
           in one place.
         </p>
       </section>
@@ -99,20 +104,34 @@ function Dashboard() {
       )}
 
       {loading ? (
-        <p className="dashboard-message">Loading your information...</p>
+        <p className="dashboard-message">
+          Loading your information...
+        </p>
       ) : (
         <section className="dashboard-grid">
-          <article className="dashboard-card">
-            <div className="card-icon profile-icon">👤</div>
 
-            <p className="card-label">PROFESSIONAL PROFILE</p>
-            <h3>{profile?.headline || "Your professional profile"}</h3>
+          {/* PROFILE CARD */}
+
+          <article className="dashboard-card">
+            <div className="card-icon profile-icon"></div>
+
+            <p className="card-label">
+              PROFESSIONAL PROFILE
+            </p>
+
+            <h3>
+              {profile?.headline || "Your professional profile"}
+            </h3>
 
             <div className="profile-display">
               {profile ? (
                 profileFields.map(({ label, value }) => (
-                  <div className="profile-display-field" key={label}>
+                  <div
+                    className="profile-display-field"
+                    key={label}
+                  >
                     <h4>{label}</h4>
+
                     <p>
                       {value?.trim()
                         ? value
@@ -135,11 +154,20 @@ function Dashboard() {
             </button>
           </article>
 
-          <article className="dashboard-card">
-            <div className="card-icon resume-icon">📄</div>
+          {/* RESUME CARD */}
 
-            <p className="card-label">RESUME MANAGEMENT</p>
-            <h3>{resume ? "Uploaded resume" : "No resume uploaded"}</h3>
+          <article className="dashboard-card">
+            <div className="card-icon resume-icon"></div>
+
+            <p className="card-label">
+              RESUME MANAGEMENT
+            </p>
+
+            <h3>
+              {resume
+                ? "Uploaded resume"
+                : "No resume uploaded"}
+            </h3>
 
             {resume ? (
               <div className="resume-display">
@@ -147,20 +175,27 @@ function Dashboard() {
                   <strong>File name:</strong>{" "}
                   {resume.original_filename}
                 </p>
+
                 <p>
                   <strong>File size:</strong>{" "}
                   {resume.file_size < 1024 * 1024
-                    ? `${Math.ceil(resume.file_size / 1024)} KB`
+                    ? `${Math.ceil(
+                        resume.file_size / 1024
+                      )} KB`
                     : `${(
                         resume.file_size /
                         (1024 * 1024)
                       ).toFixed(1)} MB`}
                 </p>
-                <p>Your saved PDF resume is available to view.</p>
+
+                <p>
+                  Your saved PDF resume is available to view.
+                </p>
               </div>
             ) : (
               <p>
-                Upload a PDF resume to keep it ready for job applications.
+                Upload a PDF resume to keep it ready for job
+                applications.
               </p>
             )}
 
@@ -168,9 +203,38 @@ function Dashboard() {
               className="primary-action"
               onClick={() => navigate("/resume-upload")}
             >
-              {resume ? "View or manage resume" : "Upload resume"}
+              {resume
+                ? "View or manage resume"
+                : "Upload resume"}
             </button>
           </article>
+
+          {/* JOB SEARCH CARD */}
+
+          <article className="dashboard-card">
+            <div className="card-icon jobs-icon"></div>
+
+            <p className="card-label">
+              JOB SEARCH
+            </p>
+
+            <h3>
+              Find your next opportunity
+            </h3>
+
+            <p>
+              Browse real job opportunities and search by keyword,
+              location, or category.
+            </p>
+
+            <button
+              className="primary-action"
+              onClick={() => navigate("/jobs")}
+            >
+              Find jobs
+            </button>
+          </article>
+
         </section>
       )}
     </main>
