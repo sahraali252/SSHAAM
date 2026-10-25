@@ -7,7 +7,7 @@
 
 | Date | Activity | Time spent | Evidence / link | Result |
 |---|---|---:|---|---|
-| YYYY-MM-DD | Add your Sprint 2 activity here | X h / X min | Paste a GitHub commit, pull request, issue, board, or document link | Briefly state the result |
+| 2026-10-20 | Display uploaded resumes and profile information | 1 week | [Paste a GitHub commit, pull request, issue, board, or document link](https://github.com/meluk16?tab=overview&from=2026-09-01&to=2026-09-30) | Implemented the features |
 
 ## Notes
 
