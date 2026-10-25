@@ -2,12 +2,12 @@
 
 ## Summary
 
-- Total time: 0 hours
-- Main contributions: To be updated during Sprint 2.
+- Total time: 1 week
+- Main contributions: User profile and resume management features implementation
 
 | Date | Activity | Time spent | Evidence / link | Result |
 |---|---|---:|---|---|
-| 2026-10-25 | Created my Sprint 2 contribution log | 10 min | [Contribution log](https://github.com/sahraali252/SSHAAM/tree/main/docs/sprint-2/contribution-logs) | Log created |
+| 2026-10-25 | Created Sprint 2 contribution log, added sub-issues to user stories, assigned issues to teammates, implemented the edit profile feature and the upload, replace, and manage resources | 1 week| https://github.com/ayalakhoitri-lab | implement the features|
 
 ## Entries
 
