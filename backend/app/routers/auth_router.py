@@ -1,10 +1,13 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
+from passlib.context import CryptContext
 
 from app.database import get_db
 from app.models import User
-from app.schemas import UserCreate, UserResponse
+from app.schemas import UserCreate, UserResponse, UserLogin
+from app.security import create_access_token
 
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 router = APIRouter(
     prefix="/auth",
@@ -22,11 +25,13 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
             detail="Email already registered"
         )
 
+    hashed_password = pwd_context.hash(user.password)
+
     new_user = User(
         email=user.email,
-        password=user.password,
+        password=hashed_password,
         full_name=user.full_name,
-        role=user.role
+        role="job_seeker"
     )
 
     db.add(new_user)
@@ -35,23 +40,30 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
 
     return new_user
 
-
 @router.post("/login")
-def login(email: str, password: str, db: Session = Depends(get_db)):
-    user = (
+def login(user: UserLogin, db: Session = Depends(get_db)):
+    existing_user = (
         db.query(User)
-        .filter(User.email == email, User.password == password)
+        .filter(User.email == user.email)
         .first()
     )
 
-    if not user:
+    if not existing_user or not pwd_context.verify(
+        user.password,
+        existing_user.password
+    ):
         raise HTTPException(
             status_code=401,
             detail="Invalid email or password"
         )
 
+    # creates a token after successful login
+    token = create_access_token(existing_user.id)
+
     return {
         "message": "Login successful",
-        "user_id": user.id,
-        "email": user.email
+        "user_id": existing_user.id,
+        "email": existing_user.email,
+        "access_token": token,
+        "token_type": "bearer"
     }

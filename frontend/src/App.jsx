@@ -1,15 +1,26 @@
-// Import React Router components used for navigation between pages
+// Import React Router components for navigation
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
-// Import the different pages of the application
+// Import authentication pages
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+
+// Import Dashboard and Profile pages
+import Dashboard from "./pages/Dashboard";
+import Profile from "./pages/Profile";
+
+// Import Resume Management page
 import ResumeUpload from "./pages/ResumeUpload";
+
+// Import Job Search page
+import JobSearch from "./pages/JobSearch";
+
+// Import Sprint 2 Job Application pages
 import JobApplication from "./pages/JobApplication";
 import ApplicationTracking from "./pages/ApplicationTracking";
 
 function App() {
-  // BrowserRouter enables navigation without refreshing the whole page
+  // BrowserRouter enables navigation without refreshing the page
   return (
     <BrowserRouter>
       <Routes>
@@ -20,10 +31,17 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
-        {/* Resume management page */}
+        {/* Dashboard and Profile */}
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/profile" element={<Profile />} />
+
+        {/* Resume Management */}
         <Route path="/resume-upload" element={<ResumeUpload />} />
 
-        {/* Sprint 2: job application submission and tracking */}
+        {/* Job Search */}
+        <Route path="/jobs" element={<JobSearch />} />
+
+        {/* Sprint 2: Job Application Submission and Tracking */}
         <Route path="/apply" element={<JobApplication />} />
         <Route path="/applications" element={<ApplicationTracking />} />
       </Routes>
