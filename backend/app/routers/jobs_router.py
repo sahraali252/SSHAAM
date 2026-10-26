@@ -40,6 +40,22 @@ async def get_jobs(
         response.raise_for_status()
         data = response.json()
 
+        if location:
+            location_lower = location.lower()
+
+            filtered_jobs = []
+
+            for job in data.get("jobs", []):
+                restrictions = job.get("locationRestrictions") or []
+
+                if any(
+                    location_lower == country.lower()
+                    for country in restrictions
+                ):
+                    filtered_jobs.append(job)
+
+            data["jobs"] = filtered_jobs
+
         return data
 
     except Exception as e:
