@@ -1,0 +1,184 @@
+/* Main background and layout for application pages */
+.application-page {
+    min-height: 100vh;
+    padding: 50px 20px;
+    background-color: #f4f6f8;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #1f2937;
+  }
+  
+  /* Main card for submitting a job application */
+  .application-card {
+    max-width: 650px;
+    margin: 0 auto;
+    padding: 35px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  }
+  
+  /* Container for the application tracking page */
+  .tracking-container {
+    max-width: 850px;
+    margin: 0 auto;
+  }
+  
+  /* Page headings */
+  .application-card h1,
+  .tracking-container h1 {
+    text-align: center;
+    color: #2563eb;
+    margin-bottom: 10px;
+  }
+  
+  .application-card h2,
+  .tracking-container h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #374151;
+  }
+  
+  /* Job details section */
+  .job-details {
+    padding: 20px;
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    margin-bottom: 25px;
+  }
+  
+  .job-details h3 {
+    color: #1f2937;
+    margin-top: 0;
+  }
+  
+  .job-details p {
+    color: #475569;
+    line-height: 1.6;
+  }
+  
+  /* Apply button */
+  .apply-button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    background-color: #2563eb;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  
+  .apply-button:hover:not(:disabled) {
+    background-color: #1d4ed8;
+  }
+  
+  /* Disabled button after applying */
+  .apply-button:disabled {
+    background-color: #94a3b8;
+    cursor: not-allowed;
+  }
+  
+  /* Confirmation message */
+  .application-message {
+    margin-top: 20px;
+    padding: 12px;
+    text-align: center;
+    color: #166534;
+    background-color: #dcfce7;
+    border-radius: 8px;
+  }
+  
+  /* Application status text */
+  .application-status {
+    margin-top: 15px;
+    text-align: center;
+    font-size: 15px;
+  }
+  
+  /* List of submitted applications */
+  .tracking-list {
+    display: grid;
+    gap: 20px;
+  }
+  
+  /* Individual application card */
+  .tracking-card {
+    padding: 25px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+  }
+  
+  .tracking-card h3 {
+    margin-top: 0;
+    color: #1f2937;
+  }
+  
+  /* Status badge shared styling */
+  .status-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  
+  /* Applied status */
+  .status-applied {
+    color: #1d4ed8;
+    background-color: #dbeafe;
+  }
+  
+  /* Under Review status */
+  .status-review {
+    color: #92400e;
+    background-color: #fef3c7;
+  }
+  
+  /* Interview status */
+  .status-interview {
+    color: #6d28d9;
+    background-color: #ede9fe;
+  }
+  
+  /* Offered status */
+  .status-offered {
+    color: #166534;
+    background-color: #dcfce7;
+  }
+  
+  /* Rejected status */
+  .status-rejected {
+    color: #991b1b;
+    background-color: #fee2e2;
+  }
+  
+  /* Navigation links */
+  .application-links {
+    margin-top: 25px;
+    text-align: center;
+  }
+  
+  .application-links a {
+    color: #2563eb;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  
+  .application-links a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Responsive design for smaller screens */
+  @media (max-width: 600px) {
+    .application-page {
+      padding: 25px 12px;
+    }
+  
+    .application-card,
+    .tracking-card {
+      padding: 20px;
+    }
+  }

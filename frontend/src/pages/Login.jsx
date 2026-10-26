@@ -3,26 +3,27 @@ import { Link, useNavigate } from "react-router-dom";
 import "./Auth.css";
 
 function Login() {
+     // Store the values entered in the login form and any message shown to the user
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
-
+  // Used to move the user to another page after a successful login
   const navigate = useNavigate();
-
-  const handleSubmit = async (e) => {
+  // Runs when the Login form is submitted
+  const handleSubmit = async (e) => {    // Prevent the browser from refreshing the page when the form is submitted
     e.preventDefault();
     setMessage("");
-
+    // Basic validation: both email and password are required
     if (!email || !password) {
       setMessage("Please enter your email and password.");
       return;
     }
 
-    try {
+    try {      // Prepare the email and password as query parameters for the backend
       const params = new URLSearchParams({
         email,
         password,
-      });
+      });      // Convert the backend response to JSON
 
       const response = await fetch(
         `http://localhost:8000/auth/login?${params.toString()}`,
