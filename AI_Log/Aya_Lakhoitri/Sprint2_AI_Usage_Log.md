@@ -124,3 +124,5 @@ He also helped me more understand GitHub functions that i din't know about and c
 |---|---|---|
 |Sprint 2 requirement breakdown | used | It helped me understand my assigned work and break it into manageable tasks. |
 | User-profile management implementation steps | modified and used | I adapted the suggestions to match the team’s project structure and requirements. |
+| Git branch and pull-request guidance | Used | It helped me safely share changes and have teammates review them before merging.|
+|GitHub Project board filter guidance | Used | t helped make the Sprint 2 issues visible to the group.|
