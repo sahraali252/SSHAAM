@@ -5,6 +5,8 @@ from passlib.context import CryptContext
 from app.database import get_db
 from app.models import User
 from app.schemas import UserCreate, UserResponse, UserLogin
+from app.security import create_access_token
+
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 router = APIRouter(
@@ -29,7 +31,7 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
         email=user.email,
         password=hashed_password,
         full_name=user.full_name,
-        role=user.role
+        role="job_seeker"
     )
 
     db.add(new_user)
@@ -55,8 +57,13 @@ def login(user: UserLogin, db: Session = Depends(get_db)):
             detail="Invalid email or password"
         )
 
+    # creates a token after successful login
+    token = create_access_token(existing_user.id)
+
     return {
         "message": "Login successful",
         "user_id": existing_user.id,
-        "email": existing_user.email
+        "email": existing_user.email,
+        "access_token": token,
+        "token_type": "bearer"
     }

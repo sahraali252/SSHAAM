@@ -1,6 +1,6 @@
 from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, Text
 from sqlalchemy.sql import func
-
+from sqlalchemy import UniqueConstraint
 from .database import Base
 
 
@@ -51,4 +51,20 @@ class Resume(Base):
         DateTime(timezone=True),
         server_default=func.now(),
         onupdate=func.now(),
+    )
+
+# stores job applications submitted by users
+class JobApplication(Base):
+    __tablename__ = "job_applications"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    job_id = Column(String, nullable=False)
+
+    status = Column(String, default="Applied", nullable=False)
+    applied_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    # prevents applying to the same job twice
+    __table_args__ = (
+        UniqueConstraint("user_id", "job_id", name="unique_user_job_application"),
     )
