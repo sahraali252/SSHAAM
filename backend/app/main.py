@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app import models
 from app.database import Base, engine
-from app.routers import auth_router, profile_router, resume_router, jobs_router
+from app.routers import auth_router, profile_router, resume_router, jobs_router, application_router
 
 app = FastAPI()
 
@@ -22,6 +22,7 @@ app.include_router(auth_router.router)
 app.include_router(profile_router.router)
 app.include_router(resume_router.router)
 app.include_router(jobs_router.router)
+app.include_router(application_router.router)
 
 @app.get("/")
 def root():

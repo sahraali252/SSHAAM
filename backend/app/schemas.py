@@ -1,5 +1,5 @@
 from datetime import datetime
-
+from typing import Literal
 from pydantic import BaseModel, ConfigDict, EmailStr
 
 
@@ -52,3 +52,22 @@ class ResumeResponse(BaseModel):
     updated_at: datetime | None = None
 
     model_config = ConfigDict(from_attributes=True)
+
+
+# validates job application requests and responses
+class JobApplicationCreate(BaseModel):
+    job_id: str
+
+
+class JobApplicationResponse(BaseModel):
+    id: int
+    user_id: int
+    job_id: str
+    status: Literal["Applied", "Under Review", "Interview", "Offered", "Rejected"]
+    applied_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class JobApplicationStatusUpdate(BaseModel):
+    status: Literal["Applied", "Under Review", "Interview", "Offered", "Rejected"]
