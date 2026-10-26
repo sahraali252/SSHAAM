@@ -40,21 +40,42 @@ async def get_jobs(
         response.raise_for_status()
         data = response.json()
 
+        jobs = data.get("jobs", [])
+
         if location:
-            location_lower = location.lower()
+            location_lower = location.strip().lower()
 
-            filtered_jobs = []
+            location_filtered_jobs = []
 
-            for job in data.get("jobs", []):
+            for job in jobs:
                 restrictions = job.get("locationRestrictions") or []
 
                 if any(
-                    location_lower == country.lower()
+                    location_lower == country.strip().lower()
                     for country in restrictions
                 ):
-                    filtered_jobs.append(job)
+                    location_filtered_jobs.append(job)
 
-            data["jobs"] = filtered_jobs
+            jobs = location_filtered_jobs
+
+        if category:
+            category_lower = category.strip().lower()
+
+            category_filtered_jobs = []
+
+            for job in jobs:
+                categories = job.get("categories") or []
+
+                if any(
+                    category_lower in job_category.strip().lower()
+                    for job_category in categories
+                ):
+                    category_filtered_jobs.append(job)
+
+            jobs = category_filtered_jobs
+
+        data["jobs"] = jobs
+        data["totalCount"] = len(jobs)
 
         return data
 

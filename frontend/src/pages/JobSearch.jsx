@@ -5,7 +5,8 @@ function JobSearch() {
   const [jobs, setJobs] = useState([]);
   const [keyword, setKeyword] = useState("");
   const [location, setLocation] = useState("Canada");
-  const [category, setCategory] = useState("");  const [loading, setLoading] = useState(false);
+  const [category, setCategory] = useState("");
+  const [loading, setLoading] = useState(false);
   const [selectedJob, setSelectedJob] = useState(null);
 
   const fetchJobs = async () => {
@@ -123,8 +124,7 @@ function JobSearch() {
           <h1>Find Your Next Opportunity</h1>
 
           <p>
-            Search available job opportunities by keyword, location, or
-            category.
+            Search available job opportunities by keyword, location, or category.
           </p>
         </div>
 
