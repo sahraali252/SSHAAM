@@ -166,8 +166,7 @@ function JobSearch() {
           <h1>Find Your Next Opportunity</h1>
 
           <p>
-            Search available job opportunities by keyword,
-            location, or category.
+            Search available job opportunities by keyword, location, or category.
           </p>
         </div>
 
