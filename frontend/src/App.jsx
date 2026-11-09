@@ -18,6 +18,7 @@ import JobSearch from "./pages/JobSearch";
 // Import Sprint 2 Job Application pages
 import JobApplication from "./pages/JobApplication";
 import ApplicationTracking from "./pages/ApplicationTracking";
+import Notifications from "./pages/Notifications";
 
 function App() {
   // BrowserRouter enables navigation without refreshing the page
@@ -44,6 +45,8 @@ function App() {
         {/* Sprint 2: Job Application Submission and Tracking */}
         <Route path="/apply" element={<JobApplication />} />
         <Route path="/applications" element={<ApplicationTracking />} />
+        {/* Sprint 3: Notifications and Reminders */}
+        <Route path="/notifications" element={<Notifications />} />
       </Routes>
     </BrowserRouter>
   );

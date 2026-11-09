@@ -11,6 +11,42 @@ function Dashboard() {
   const [resume, setResume] = useState(null);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
+  const [unreadCount, setUnreadCount] = useState(0);
+
+ useEffect(() => {
+  const updateUnreadCount = () => {
+    try {
+      const saved = localStorage.getItem(
+        "careerconnect_demo_notifications"
+      );
+
+      if (saved) {
+        const notifications = JSON.parse(saved);
+
+        if (Array.isArray(notifications)) {
+          setUnreadCount(
+            notifications.filter((notification) => !notification.read).length
+          );
+        }
+      } else {
+        setUnreadCount(2);
+      }
+    } catch (error) {
+      console.error("Unable to load unread count:", error);
+      setUnreadCount(0);
+    }
+  };
+
+  updateUnreadCount();
+
+  window.addEventListener("notificationsUpdated", updateUnreadCount);
+  window.addEventListener("storage", updateUnreadCount);
+
+  return () => {
+    window.removeEventListener("notificationsUpdated", updateUnreadCount);
+    window.removeEventListener("storage", updateUnreadCount);
+  };
+}, []);
 
   useEffect(() => {
     if (!userId) {
@@ -75,6 +111,17 @@ function Dashboard() {
         </div>
 
         <div className="header-actions">
+          {/* Sprint 3: Notifications */}
+          <button
+            type="button"
+            className="notifications-header-button"
+            onClick={() => navigate("/notifications")}
+            aria-label="View notifications"
+            title="Notifications"
+          >
+            🔔 Notifications ({unreadCount})
+          </button>
+
           <span className="user-email">{userEmail}</span>
 
           <button
@@ -111,7 +158,6 @@ function Dashboard() {
         <section className="dashboard-grid">
 
           {/* PROFILE CARD */}
-
           <article className="dashboard-card">
             <div className="card-icon profile-icon"></div>
 
@@ -155,7 +201,6 @@ function Dashboard() {
           </article>
 
           {/* RESUME CARD */}
-
           <article className="dashboard-card">
             <div className="card-icon resume-icon"></div>
 
@@ -210,7 +255,6 @@ function Dashboard() {
           </article>
 
           {/* JOB SEARCH CARD */}
-
           <article className="dashboard-card">
             <div className="card-icon jobs-icon"></div>
 

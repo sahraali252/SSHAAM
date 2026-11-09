@@ -273,3 +273,17 @@
     margin-top: 36px;
   }
 }
+.notifications-header-button {
+  border: 1px solid #cbd5e1;
+  background: white;
+  color: #1e293b;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font: inherit;
+  cursor: pointer;
+}
+
+.notifications-header-button:hover {
+  background: #eff6ff;
+  border-color: #2563eb;
+}
