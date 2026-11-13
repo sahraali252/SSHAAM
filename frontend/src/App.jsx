@@ -1,6 +1,6 @@
 // Import React Router components for navigation
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-
+import RecruiterDashboard from "./pages/RecruiterDashboard";
 // Import authentication pages
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -24,6 +24,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        
         {/* Redirect the home page to Login */}
         <Route path="/" element={<Navigate to="/login" replace />} />
 
@@ -34,6 +35,7 @@ function App() {
         {/* Dashboard and Profile */}
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/recruiter/dashboard" element={<RecruiterDashboard />} />
 
         {/* Resume Management */}
         <Route path="/resume-upload" element={<ResumeUpload />} />
@@ -44,6 +46,7 @@ function App() {
         {/* Sprint 2: Job Application Submission and Tracking */}
         <Route path="/apply" element={<JobApplication />} />
         <Route path="/applications" element={<ApplicationTracking />} />
+      
       </Routes>
     </BrowserRouter>
   );
