@@ -7,8 +7,7 @@ class UserCreate(BaseModel):
     email: EmailStr
     password: str
     full_name: str
-    role: str = "job_seeker"
-
+    role: Literal["job_seeker", "recruiter"] = "job_seeker"
 
 class UserLogin(BaseModel):
     email: EmailStr

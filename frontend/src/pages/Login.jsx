@@ -30,7 +30,7 @@ function Login() {
     try {
       // Send login credentials to the backend API
       const response = await fetch(
-        "http://localhost:8000/auth/login",
+        "http://127.0.0.1:8000/auth/login",
         {
           method: "POST",
           headers: {
@@ -60,9 +60,16 @@ function Login() {
         if (data.email) {
           localStorage.setItem("user_email", data.email);
         }
+        if (data.role) {
+  localStorage.setItem("user_role", data.role);
+}
 
-        // Redirect the user to the dashboard
-        navigate("/dashboard");
+        // Redirect the user to the correct dashboard depending on wether or not he is a job seeker or a recruiter
+        if (data.role === "recruiter") {
+  navigate("/recruiter/dashboard");
+} else {
+  navigate("/dashboard");
+}
       } else {
         // Display the error returned by the backend
         setMessage(data.detail || "Invalid email or password.");

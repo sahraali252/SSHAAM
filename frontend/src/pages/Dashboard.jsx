@@ -52,8 +52,10 @@ function Dashboard() {
   }, [userId, navigate]);
 
   const handleLogout = () => {
+        localStorage.removeItem("access_token");
     localStorage.removeItem("user_id");
     localStorage.removeItem("user_email");
+    localStorage.removeItem("user_role");
     navigate("/login");
   };
 
