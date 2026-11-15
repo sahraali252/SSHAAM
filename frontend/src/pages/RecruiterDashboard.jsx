@@ -1,3 +1,5 @@
+import { deadlineInputValue, parseApiDate } from "../utils/dates";
+import NotificationCenter from "../components/NotificationCenter";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./RecruiterDashboard.css";
@@ -10,6 +12,7 @@ const emptyForm = {
   location: "",
   employment_type: "Full-time",
   description: "",
+  deadline: "",
 };
 
 function RecruiterDashboard() {
@@ -84,6 +87,7 @@ function RecruiterDashboard() {
       location: posting.location,
       employment_type: posting.employment_type,
       description: posting.description,
+      deadline: deadlineInputValue(posting.deadline),
     });
 
     setMessage("");
@@ -123,7 +127,14 @@ function RecruiterDashboard() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          deadline: formData.deadline
+            ? editingPosting && formData.deadline === deadlineInputValue(editingPosting.deadline)
+              ? parseApiDate(editingPosting.deadline).toISOString()
+              : new Date(formData.deadline).toISOString()
+            : null,
+        }),
       });
 
       const data = await response.json();
@@ -232,6 +243,7 @@ function RecruiterDashboard() {
         </nav>
 
         <div className="recruiter-header-actions">
+          <NotificationCenter />
           <span>{userEmail}</span>
 
           <button
@@ -325,6 +337,11 @@ function RecruiterDashboard() {
                 </select>
               </label>
             </div>
+
+            <label>
+              Application deadline (optional, your local time)
+              <input type="datetime-local" name="deadline" value={formData.deadline} onChange={handleInputChange} />
+            </label>
 
             <label>
               Job description
@@ -428,6 +445,8 @@ function RecruiterDashboard() {
                 <p>
                   <strong>Type:</strong> {posting.employment_type}
                 </p>
+
+                {posting.deadline && <p><strong>Deadline:</strong> {parseApiDate(posting.deadline)?.toLocaleString()}</p>}
 
                 <p className="posting-description">
                   {posting.description}
