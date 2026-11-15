@@ -27,12 +27,13 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
 
     hashed_password = pwd_context.hash(user.password)
 
+
     new_user = User(
-        email=user.email,
-        password=hashed_password,
-        full_name=user.full_name,
-        role="job_seeker"
-    )
+    email=user.email,
+    password=hashed_password,
+    full_name=user.full_name,
+    role=user.role
+)
 
     db.add(new_user)
     db.commit()
@@ -60,10 +61,12 @@ def login(user: UserLogin, db: Session = Depends(get_db)):
     # creates a token after successful login
     token = create_access_token(existing_user.id)
 
+#retunrs the users role when logging in
     return {
-        "message": "Login successful",
-        "user_id": existing_user.id,
-        "email": existing_user.email,
-        "access_token": token,
-        "token_type": "bearer"
-    }
+    "message": "Login successful",
+    "user_id": existing_user.id,
+    "email": existing_user.email,
+    "role": existing_user.role,
+    "access_token": token,
+    "token_type": "bearer"
+}

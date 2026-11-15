@@ -7,8 +7,7 @@ class UserCreate(BaseModel):
     email: EmailStr
     password: str
     full_name: str
-    role: str = "job_seeker"
-
+    role: Literal["job_seeker", "recruiter"] = "job_seeker"
 
 class UserLogin(BaseModel):
     email: EmailStr
@@ -24,6 +23,42 @@ class UserResponse(BaseModel):
 
     model_config = ConfigDict(from_attributes=True)
 
+class JobPostingBase(BaseModel):
+    title: str
+    company_name: str
+    location: str
+    employment_type: str
+    description: str
+
+
+class JobPostingCreate(JobPostingBase):
+    pass
+
+
+class JobPostingUpdate(BaseModel):
+    title: str | None = None
+    company_name: str | None = None
+    location: str | None = None
+    employment_type: str | None = None
+    description: str | None = None
+
+
+class JobPostingArchiveUpdate(BaseModel):
+    status: Literal["active", "archived"]
+
+
+class JobPostingResponse(JobPostingBase):
+    id: str
+    recruiter_id: int
+    status: Literal["active", "archived"]
+    created_at: datetime
+    updated_at: datetime | None = None
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class RecruiterPostingSummary(JobPostingResponse):
+    application_count: int
 
 class ProfessionalProfileUpsert(BaseModel):
     headline: str = ""
