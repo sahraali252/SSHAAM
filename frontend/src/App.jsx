@@ -1,6 +1,11 @@
+
 // Import React Router components for navigation
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+
+// Import recruiter pages
 import RecruiterDashboard from "./pages/RecruiterDashboard";
+import RecruiterApplications from "./pages/RecruiterApplications";
+
 // Import authentication pages
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -20,11 +25,9 @@ import JobApplication from "./pages/JobApplication";
 import ApplicationTracking from "./pages/ApplicationTracking";
 
 function App() {
-  // BrowserRouter enables navigation without refreshing the page
   return (
     <BrowserRouter>
       <Routes>
-        
         {/* Redirect the home page to Login */}
         <Route path="/" element={<Navigate to="/login" replace />} />
 
@@ -35,7 +38,16 @@ function App() {
         {/* Dashboard and Profile */}
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/recruiter/dashboard" element={<RecruiterDashboard />} />
+
+        {/* Recruiter pages */}
+        <Route
+          path="/recruiter/dashboard"
+          element={<RecruiterDashboard />}
+        />
+        <Route
+          path="/recruiter/applications"
+          element={<RecruiterApplications />}
+        />
 
         {/* Resume Management */}
         <Route path="/resume-upload" element={<ResumeUpload />} />
@@ -43,10 +55,9 @@ function App() {
         {/* Job Search */}
         <Route path="/jobs" element={<JobSearch />} />
 
-        {/* Sprint 2: Job Application Submission and Tracking */}
+        {/* Job Application Submission and Tracking */}
         <Route path="/apply" element={<JobApplication />} />
         <Route path="/applications" element={<ApplicationTracking />} />
-      
       </Routes>
     </BrowserRouter>
   );
