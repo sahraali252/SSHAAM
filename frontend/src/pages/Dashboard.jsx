@@ -1,72 +1,35 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import RecruiterOpportunities from "../components/RecruiterOpportunities";
 import "./Dashboard.css";
 
 function Dashboard() {
   const navigate = useNavigate();
+
   const userId = localStorage.getItem("user_id");
   const userEmail = localStorage.getItem("user_email");
-
-  const [profile, setProfile] = useState(null);
-  const [resume, setResume] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [loadError, setLoadError] = useState("");
+  const userRole = localStorage.getItem("user_role");
+  const token = localStorage.getItem("access_token");
 
   useEffect(() => {
-    if (!userId) {
+    if (!userId || !token) {
       navigate("/login");
       return;
     }
 
-    const loadDashboard = async () => {
-      setLoading(true);
-      setLoadError("");
-
-      try {
-        const [profileResponse, resumeResponse] = await Promise.all([
-          fetch(`http://localhost:8000/profiles/${userId}`),
-          fetch(`http://localhost:8000/resumes/${userId}`),
-        ]);
-
-        if (profileResponse.ok) {
-          setProfile(await profileResponse.json());
-        } else if (profileResponse.status !== 404) {
-          throw new Error("Unable to load your professional profile.");
-        }
-
-        if (resumeResponse.ok) {
-          setResume(await resumeResponse.json());
-        } else if (resumeResponse.status !== 404) {
-          throw new Error("Unable to load your resume.");
-        }
-      } catch (error) {
-        setLoadError(
-          error.message || "Unable to connect to the server."
-        );
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadDashboard();
-  }, [userId, navigate]);
+    if (userRole === "recruiter") {
+      navigate("/recruiter/dashboard");
+    }
+  }, [navigate, token, userId, userRole]);
 
   const handleLogout = () => {
-        localStorage.removeItem("access_token");
+    localStorage.removeItem("access_token");
     localStorage.removeItem("user_id");
     localStorage.removeItem("user_email");
     localStorage.removeItem("user_role");
+
     navigate("/login");
   };
-
-  const profileFields = [
-    { label: "Professional headline", value: profile?.headline },
-    { label: "Location", value: profile?.location },
-    { label: "Professional summary", value: profile?.bio },
-    { label: "Skills", value: profile?.skills },
-    { label: "Education", value: profile?.education },
-    { label: "Work experience", value: profile?.experience },
-  ];
 
   return (
     <main className="dashboard-page">
@@ -75,6 +38,28 @@ function Dashboard() {
           <h1>CareerConnect</h1>
           <p>Your job-search workspace</p>
         </div>
+
+        <nav className="dashboard-navigation">
+          <button className="active-navigation-item">
+            Opportunities
+          </button>
+
+          <button onClick={() => navigate("/profile")}>
+            Profile
+          </button>
+
+          <button onClick={() => navigate("/resume-upload")}>
+            Resume
+          </button>
+
+          <button onClick={() => navigate("/jobs")}>
+            Browse Jobs
+          </button>
+
+          <button onClick={() => navigate("/applications")}>
+            Applications
+          </button>
+        </nav>
 
         <div className="header-actions">
           <span className="user-email">{userEmail}</span>
@@ -88,157 +73,18 @@ function Dashboard() {
         </div>
       </header>
 
-      <section className="welcome-section">
-        <p className="eyebrow">DASHBOARD</p>
+      <section className="job-seeker-welcome">
+        <p className="eyebrow">JOB OPPORTUNITIES</p>
 
-        <h2>Welcome back!</h2>
+        <h2>Find your next opportunity</h2>
 
         <p>
-          Manage your professional profile, resume, and job search
-          in one place.
+          Explore opportunities posted directly by recruiters on
+          CareerConnect.
         </p>
       </section>
 
-      {loadError && (
-        <p className="dashboard-message" role="alert">
-          {loadError}
-        </p>
-      )}
-
-      {loading ? (
-        <p className="dashboard-message">
-          Loading your information...
-        </p>
-      ) : (
-        <section className="dashboard-grid">
-
-          {/* PROFILE CARD */}
-
-          <article className="dashboard-card">
-            <div className="card-icon profile-icon"></div>
-
-            <p className="card-label">
-              PROFESSIONAL PROFILE
-            </p>
-
-            <h3>
-              {profile?.headline || "Your professional profile"}
-            </h3>
-
-            <div className="profile-display">
-              {profile ? (
-                profileFields.map(({ label, value }) => (
-                  <div
-                    className="profile-display-field"
-                    key={label}
-                  >
-                    <h4>{label}</h4>
-
-                    <p>
-                      {value?.trim()
-                        ? value
-                        : "Not provided yet"}
-                    </p>
-                  </div>
-                ))
-              ) : (
-                <p>
-                  You have not created a professional profile yet.
-                </p>
-              )}
-            </div>
-
-            <button
-              className="primary-action"
-              onClick={() => navigate("/profile")}
-            >
-              {profile ? "Edit profile" : "Create profile"}
-            </button>
-          </article>
-
-          {/* RESUME CARD */}
-
-          <article className="dashboard-card">
-            <div className="card-icon resume-icon"></div>
-
-            <p className="card-label">
-              RESUME MANAGEMENT
-            </p>
-
-            <h3>
-              {resume
-                ? "Uploaded resume"
-                : "No resume uploaded"}
-            </h3>
-
-            {resume ? (
-              <div className="resume-display">
-                <p className="resume-filename">
-                  <strong>File name:</strong>{" "}
-                  {resume.original_filename}
-                </p>
-
-                <p>
-                  <strong>File size:</strong>{" "}
-                  {resume.file_size < 1024 * 1024
-                    ? `${Math.ceil(
-                        resume.file_size / 1024
-                      )} KB`
-                    : `${(
-                        resume.file_size /
-                        (1024 * 1024)
-                      ).toFixed(1)} MB`}
-                </p>
-
-                <p>
-                  Your saved PDF resume is available to view.
-                </p>
-              </div>
-            ) : (
-              <p>
-                Upload a PDF resume to keep it ready for job
-                applications.
-              </p>
-            )}
-
-            <button
-              className="primary-action"
-              onClick={() => navigate("/resume-upload")}
-            >
-              {resume
-                ? "View or manage resume"
-                : "Upload resume"}
-            </button>
-          </article>
-
-          {/* JOB SEARCH CARD */}
-
-          <article className="dashboard-card">
-            <div className="card-icon jobs-icon"></div>
-
-            <p className="card-label">
-              JOB SEARCH
-            </p>
-
-            <h3>
-              Find your next opportunity
-            </h3>
-
-            <p>
-              Browse real job opportunities and search by keyword,
-              location, or category.
-            </p>
-
-            <button
-              className="primary-action"
-              onClick={() => navigate("/jobs")}
-            >
-              Find jobs
-            </button>
-          </article>
-
-        </section>
-      )}
+      <RecruiterOpportunities />
     </main>
   );
 }

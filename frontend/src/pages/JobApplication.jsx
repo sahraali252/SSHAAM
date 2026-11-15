@@ -67,7 +67,7 @@ function JobApplication() {
 
       try {
         const response = await fetch(
-          "http://localhost:8000/applications/my-applications",
+          "http://127.0.0.1:8000/applications/my-applications",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -137,7 +137,7 @@ function JobApplication() {
 
     try {
       const response = await fetch(
-        "http://localhost:8000/applications/",
+        "http://127.0.0.1:8000/applications/",
         {
           method: "POST",
           headers: {

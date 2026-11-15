@@ -1,3 +1,4 @@
+import uuid
 from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, Text
 from sqlalchemy.sql import func
 from sqlalchemy import UniqueConstraint
@@ -14,6 +15,38 @@ class User(Base):
     role = Column(String, default="job_seeker")
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
+class JobPosting(Base):
+    __tablename__ = "job_postings"
+
+    id = Column(
+        String,
+        primary_key=True,
+        default=lambda: str(uuid.uuid4())
+    )
+    recruiter_id = Column(
+        Integer,
+        ForeignKey("users.id"),
+        nullable=False,
+        index=True
+    )
+
+    title = Column(String, nullable=False)
+    company_name = Column(String, nullable=False)
+    location = Column(String, nullable=False)
+    employment_type = Column(String, nullable=False)
+    description = Column(Text, nullable=False)
+
+    status = Column(String, default="active", nullable=False, index=True)
+
+    created_at = Column(
+        DateTime(timezone=True),
+        server_default=func.now()
+    )
+    updated_at = Column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+        onupdate=func.now(),
+    )
 
 class ProfessionalProfile(Base):
     __tablename__ = "professional_profiles"

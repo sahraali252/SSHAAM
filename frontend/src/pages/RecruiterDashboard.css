@@ -6,50 +6,70 @@
   font-family: Inter, Arial, Helvetica, sans-serif;
 }
 
+.recruiter-dashboard-header,
+.recruiter-welcome,
+.posting-form-card,
+.postings-section,
+.recruiter-message {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .recruiter-dashboard-header {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding-bottom: 28px;
+  padding-bottom: 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 22px;
   border-bottom: 1px solid #e5e5e5;
 }
 
-.recruiter-dashboard-header h1 {
+.recruiter-brand h1 {
   margin: 0;
   font-size: 26px;
 }
 
-.recruiter-dashboard-header p {
+.recruiter-brand p {
   margin: 5px 0 0;
   color: #737373;
-}
-
-.recruiter-header-actions {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  color: #525252;
   font-size: 14px;
 }
 
-.recruiter-header-actions button,
-.recruiter-dashboard-card button {
-  padding: 10px 16px;
-  border: 1px solid #d4d4d4;
-  border-radius: 8px;
-  background: #ffffff;
-  color: #111111;
+.recruiter-navigation,
+.recruiter-header-actions,
+.posting-filters,
+.posting-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.recruiter-navigation button {
+  padding: 9px 12px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: #525252;
   cursor: pointer;
+  font-size: 14px;
   font-weight: 600;
 }
 
-.recruiter-welcome,
-.recruiter-dashboard-card {
-  max-width: 1000px;
-  margin-left: auto;
-  margin-right: auto;
+.recruiter-navigation button:hover {
+  background: #f5f5f5;
+  color: #111111;
+}
+
+.recruiter-navigation button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.recruiter-header-actions {
+  gap: 16px;
+  color: #525252;
+  font-size: 14px;
 }
 
 .recruiter-welcome {
@@ -58,6 +78,7 @@
 }
 
 .recruiter-eyebrow {
+  margin: 0 0 10px;
   color: #737373;
   font-size: 11px;
   font-weight: 700;
@@ -65,35 +86,233 @@
 }
 
 .recruiter-welcome h2 {
-  margin: 10px 0;
-  font-size: 36px;
+  margin: 0;
+  font-size: 38px;
+  letter-spacing: -0.04em;
 }
 
 .recruiter-welcome p:last-child,
-.recruiter-dashboard-card p {
+.posting-section-heading p,
+.posting-card p,
+.empty-state {
   color: #737373;
   line-height: 1.6;
 }
 
-.recruiter-dashboard-card {
-  padding: 28px;
-  background: #ffffff;
-  border: 1px solid #e5e5e5;
-  border-radius: 12px;
+.recruiter-welcome p:last-child {
+  margin: 12px 0 0;
 }
 
-.recruiter-dashboard-card h3 {
-  margin-top: 0;
+.primary-button,
+.secondary-button,
+.text-button,
+.posting-filters button {
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
 }
 
-.recruiter-dashboard-card button:disabled {
+.primary-button {
+  padding: 12px 16px;
+  border: 1px solid #111111;
+  background: #111111;
+  color: #ffffff;
+}
+
+.primary-button:hover {
+  background: #333333;
+}
+
+.primary-button:disabled {
   cursor: not-allowed;
   opacity: 0.6;
 }
 
-.recruiter-coming-soon {
-  margin-bottom: 0;
-  font-size: 13px;
+.secondary-button {
+  padding: 10px 14px;
+  border: 1px solid #d4d4d4;
+  background: #ffffff;
+  color: #111111;
+}
+
+.secondary-button:hover {
+  background: #f5f5f5;
+}
+
+.recruiter-message {
+  margin-bottom: 18px;
+  color: #525252;
+}
+
+.posting-form-card {
+  margin-bottom: 24px;
+  padding: 28px;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+.form-heading,
+.posting-section-heading,
+.posting-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.form-heading h3,
+.posting-section-heading h3 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.form-heading {
+  margin-bottom: 20px;
+}
+
+.text-button {
+  border: 0;
+  background: transparent;
+  color: #525252;
+}
+
+.posting-form-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.posting-form-card label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: #404040;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.posting-form-card input,
+.posting-form-card select,
+.posting-form-card textarea {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 11px 12px;
+  border: 1px solid #d4d4d4;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #111111;
+  font: inherit;
+  font-weight: 400;
+}
+
+.posting-form-card textarea {
+  resize: vertical;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.postings-section {
+  padding-bottom: 48px;
+}
+
+.posting-section-heading {
+  margin-bottom: 18px;
+}
+
+.posting-section-heading p {
+  margin: 7px 0 0;
+}
+
+.posting-filters {
+  margin-bottom: 18px;
+}
+
+.posting-filters button {
+  padding: 9px 13px;
+  border: 1px solid #d4d4d4;
+  background: #ffffff;
+  color: #525252;
+}
+
+.posting-filters button.selected {
+  border-color: #111111;
+  background: #111111;
+  color: #ffffff;
+}
+
+.empty-state {
+  padding: 32px 0;
+}
+
+.posting-list {
+  display: grid;
+  gap: 16px;
+}
+
+.posting-card {
+  padding: 24px;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+.posting-status {
+  display: inline-block;
+  margin-bottom: 10px;
+  padding: 4px 8px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.posting-status.active {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.posting-status.archived {
+  background: #f3f4f6;
+  color: #4b5563;
+}
+
+.posting-card h4 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.company-name {
+  margin-top: 6px;
+  font-weight: 600;
+}
+
+.application-count {
+  white-space: nowrap;
+  color: #525252;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.posting-description {
+  max-width: 760px;
+  white-space: pre-wrap;
+}
+
+.posting-actions {
+  margin-top: 20px;
+}
+
+@media (max-width: 850px) {
+  .recruiter-dashboard-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
 }
 
 @media (max-width: 700px) {
@@ -101,9 +320,15 @@
     padding: 20px;
   }
 
-  .recruiter-dashboard-header,
-  .recruiter-header-actions {
+  .recruiter-navigation,
+  .recruiter-header-actions,
+  .posting-section-heading,
+  .posting-card-top {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
   }
 }
