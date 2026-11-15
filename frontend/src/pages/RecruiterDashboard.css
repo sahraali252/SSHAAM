@@ -332,3 +332,4 @@
     grid-template-columns: 1fr;
   }
 }
+.recruiter-dashboard-header { flex-wrap: wrap; }

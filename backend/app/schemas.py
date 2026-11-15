@@ -1,6 +1,6 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Literal
-from pydantic import BaseModel, ConfigDict, EmailStr
+from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_validator
 
 
 class UserCreate(BaseModel):
@@ -29,10 +29,18 @@ class JobPostingBase(BaseModel):
     location: str
     employment_type: str
     description: str
+    deadline: datetime | None = None
 
 
 class JobPostingCreate(JobPostingBase):
-    pass
+    @field_validator("deadline")
+    @classmethod
+    def normalize_deadline(cls, value):
+        if value is not None:
+            if value.tzinfo is None:
+                return value.replace(tzinfo=timezone.utc)
+            return value.astimezone(timezone.utc)
+        return value
 
 
 class JobPostingUpdate(BaseModel):
@@ -41,6 +49,16 @@ class JobPostingUpdate(BaseModel):
     location: str | None = None
     employment_type: str | None = None
     description: str | None = None
+    deadline: datetime | None = None
+
+    @field_validator("deadline")
+    @classmethod
+    def normalize_deadline(cls, value):
+        if value is not None:
+            if value.tzinfo is None:
+                return value.replace(tzinfo=timezone.utc)
+            return value.astimezone(timezone.utc)
+        return value
 
 
 class JobPostingArchiveUpdate(BaseModel):
@@ -106,3 +124,24 @@ class JobApplicationResponse(BaseModel):
 
 class JobApplicationStatusUpdate(BaseModel):
     status: Literal["Applied", "Under Review", "Interview", "Offered", "Rejected"]
+
+
+class NotificationResponse(BaseModel):
+    id: int
+    kind: str
+    message: str
+    application_id: int | None
+    job_id: str | None
+    is_read: bool
+    created_at: datetime
+    read_at: datetime | None
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class UnreadNotificationCount(BaseModel):
+    unread_count: int
+
+
+class InterviewInvitationCreate(BaseModel):
+    message: str = Field(default="You have been invited to an interview.", min_length=1, max_length=2000)

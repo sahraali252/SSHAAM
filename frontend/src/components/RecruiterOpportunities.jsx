@@ -1,3 +1,4 @@
+import { parseApiDate } from "../utils/dates";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./RecruiterOpportunities.css";
@@ -109,6 +110,8 @@ function RecruiterOpportunities() {
             <p>
               <strong>Type:</strong> {posting.employment_type}
             </p>
+
+            {posting.deadline && <p><strong>Deadline:</strong> {parseApiDate(posting.deadline)?.toLocaleString()}</p>}
 
             <p className="opportunity-description">
               {posting.description}

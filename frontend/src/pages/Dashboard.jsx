@@ -1,3 +1,4 @@
+import NotificationCenter from "../components/NotificationCenter";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import RecruiterOpportunities from "../components/RecruiterOpportunities";
@@ -62,6 +63,7 @@ function Dashboard() {
         </nav>
 
         <div className="header-actions">
+          <NotificationCenter />
           <span className="user-email">{userEmail}</span>
 
           <button
