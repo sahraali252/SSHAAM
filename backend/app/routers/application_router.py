@@ -10,6 +10,7 @@ from app.schemas import (
     JobApplicationStatusUpdate
 )
 from app.security import get_current_user
+from app.services.notifications import notify_new_application, change_application_status
 
 router = APIRouter(prefix="/applications", tags=["Applications"])
 
@@ -48,6 +49,8 @@ def submit_application(
     db.add(new_application)
 
     try:
+        db.flush()
+        notify_new_application(db, new_application)
         db.commit()
     except IntegrityError:
         db.rollback()
@@ -121,7 +124,7 @@ def update_application_status(
             detail="Application not found"
         )
 
-    application.status = status_update.status
+    change_application_status(db, application, status_update.status, notify_interview=False)
 
     db.commit()
     db.refresh(application)

@@ -1,5 +1,5 @@
 import uuid
-from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, Text
+from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, String, Text
 from sqlalchemy.sql import func
 from sqlalchemy import UniqueConstraint
 from .database import Base
@@ -36,6 +36,7 @@ class JobPosting(Base):
     employment_type = Column(String, nullable=False)
     description = Column(Text, nullable=False)
 
+    deadline = Column(DateTime(timezone=True), nullable=True, index=True)
     status = Column(String, default="active", nullable=False, index=True)
 
     created_at = Column(
@@ -101,3 +102,18 @@ class JobApplication(Base):
     __table_args__ = (
         UniqueConstraint("user_id", "job_id", name="unique_user_job_application"),
     )
+
+
+class Notification(Base):
+    __tablename__ = "notifications"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    kind = Column(String, nullable=False)
+    message = Column(Text, nullable=False)
+    application_id = Column(Integer, ForeignKey("job_applications.id"), nullable=True)
+    job_id = Column(String, nullable=True)
+    is_read = Column(Boolean, default=False, nullable=False, index=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
+    read_at = Column(DateTime(timezone=True), nullable=True)
+    deduplication_key = Column(String, unique=True, nullable=True)

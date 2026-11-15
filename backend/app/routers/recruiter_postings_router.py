@@ -144,6 +144,8 @@ def update_job_posting(
     updates = posting_data.model_dump(exclude_unset=True)
 
     for field, value in updates.items():
+        if value is None and field != "deadline":
+            raise HTTPException(status_code=422, detail=f"{field} cannot be null")
         setattr(posting, field, value)
 
     db.commit()
