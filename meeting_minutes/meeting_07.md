@@ -13,12 +13,12 @@
 
 | First Name | Last Name | Student ID | Attendance |
 |------------|-----------|------------|------------|
-| Saara | Noori | 40224277 | To confirm |
-| Sahra | Ali | 40328476 | To confirm |
-| Hiba | Tyridini | 40348854 | To confirm |
-| Aya | Lakhoitri | 40330319 | To confirm |
-| Amine | Ait Yakoub | 40315369 | To confirm |
-| Melissa | Luk | 40089387 | To confirm |
+| Saara | Noori | 40224277 | Present |
+| Sahra | Ali | 40328476 | Present |
+| Hiba | Tyridini | 40348854 | Present |
+| Aya | Lakhoitri | 40330319 | Present |
+| Amine | Ait Yakoub | 40315369 | Present |
+| Melissa | Luk | 40089387 | Present |
 
 ---
 
