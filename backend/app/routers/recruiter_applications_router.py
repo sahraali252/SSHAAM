@@ -12,8 +12,9 @@ from app.models import (
     Resume,
     User,
 )
-from app.schemas import JobApplicationResponse, JobApplicationStatusUpdate
+from app.schemas import JobApplicationResponse, JobApplicationStatusUpdate, InterviewInvitationCreate
 from app.security import get_current_user
+from app.services.notifications import change_application_status
 from app.routers.resume_router import get_signed_url
 from app.routers.recruiter_postings_router import require_recruiter
 
@@ -191,13 +192,11 @@ def update_application_status(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    application = owned_application(
-        db,
-        current_user,
-        application_id,
-    )
+    application = owned_application(db, current_user, application_id)
 
-    application.status = status_update.status
+    change_application_status(
+        db, application, status_update.status, notify_interview=False
+    )
 
     db.commit()
     db.refresh(application)
@@ -208,3 +207,25 @@ def update_application_status(
         "status": application.status,
     }
 
+
+@router.post("/{application_id}/interview")
+def invite_to_interview(
+    application_id: int,
+    invitation: InterviewInvitationCreate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    application = owned_application(db, current_user, application_id)
+
+    change_application_status(
+        db, application, "Interview", invitation.message
+    )
+
+    db.commit()
+    db.refresh(application)
+
+    return {
+        "message": "Interview invitation sent successfully.",
+        "application_id": application.id,
+        "status": application.status,
+    }
