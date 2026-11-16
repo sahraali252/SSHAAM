@@ -12,6 +12,7 @@ import Register from "./pages/Register";
 
 // Import Dashboard and Profile pages
 import Dashboard from "./pages/Dashboard";
+import JobSeekerLayout from "./components/JobSeekerLayout";
 import Profile from "./pages/Profile";
 
 // Import Resume Management page
@@ -36,8 +37,6 @@ function App() {
         <Route path="/register" element={<Register />} />
 
         {/* Dashboard and Profile */}
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/profile" element={<Profile />} />
 
         {/* Recruiter pages */}
         <Route
@@ -50,14 +49,18 @@ function App() {
         />
 
         {/* Resume Management */}
-        <Route path="/resume-upload" element={<ResumeUpload />} />
 
         {/* Job Search */}
-        <Route path="/jobs" element={<JobSearch />} />
 
         {/* Job Application Submission and Tracking */}
-        <Route path="/apply" element={<JobApplication />} />
-        <Route path="/applications" element={<ApplicationTracking />} />
+        <Route element={<JobSeekerLayout />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/jobs" element={<JobSearch />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/resume-upload" element={<ResumeUpload />} />
+          <Route path="/apply" element={<JobApplication />} />
+          <Route path="/applications" element={<ApplicationTracking />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );

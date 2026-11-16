@@ -68,7 +68,7 @@ function Login() {
         if (data.role === "recruiter") {
   navigate("/recruiter/dashboard");
 } else {
-  navigate("/dashboard");
+  navigate("/jobs");
 }
       } else {
         // Display the error returned by the backend
