@@ -4,7 +4,7 @@
 
 | AI Tool | Purpose | Date |
 |---|---|---|
-| ChatGPT Codex | Help with understanding the assignment requirements, needed implementations for each feature and implementation of these features, and  generating clear steps to complete my part of the project| October 12–25, 2026 |
+| ChatGPT Codex | Help with understanding the assignment requirements, needed implementations for each feature and implementation of these features, and  generating clear steps to complete my part of the project| November 10–15, 2026 |
 
 ## 2. Prompts Used
 
