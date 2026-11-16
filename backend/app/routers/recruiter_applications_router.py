@@ -12,23 +12,16 @@ from app.models import (
     Resume,
     User,
 )
-from app.schemas import JobApplicationStatusUpdate
+from app.schemas import JobApplicationResponse, JobApplicationStatusUpdate
 from app.security import get_current_user
 from app.routers.resume_router import get_signed_url
+from app.routers.recruiter_postings_router import require_recruiter
 
 
 router = APIRouter(
     prefix="/recruiter/applications",
     tags=["Recruiter Applications"],
 )
-
-
-def require_recruiter(user: User):
-    if user.role != "recruiter":
-        raise HTTPException(
-            status_code=403,
-            detail="Recruiter access is required.",
-        )
 
 
 def get_owned_posting(
@@ -54,8 +47,44 @@ def get_owned_posting(
     return posting
 
 
-# View applications for a recruiter's job posting.
-# Supports optional status and date filters.
+def owned_application(db, user, application_id):
+    require_recruiter(user)
+
+    application = (
+        db.query(JobApplication)
+        .join(JobPosting, JobApplication.job_id == JobPosting.id)
+        .filter(
+            JobApplication.id == application_id,
+            JobPosting.recruiter_id == user.id,
+        )
+        .first()
+    )
+
+    if not application:
+        raise HTTPException(
+            status_code=404,
+            detail="Application not found.",
+        )
+
+    return application
+
+
+@router.get("/", response_model=list[JobApplicationResponse])
+def get_applications(
+    db: Session = Depends(get_db),
+    user: User = Depends(get_current_user),
+):
+    require_recruiter(user)
+
+    return (
+        db.query(JobApplication)
+        .join(JobPosting, JobApplication.job_id == JobPosting.id)
+        .filter(JobPosting.recruiter_id == user.id)
+        .order_by(JobApplication.applied_at.desc())
+        .all()
+    )
+
+
 @router.get("/job-postings/{posting_id}")
 def get_posting_applications(
     posting_id: str,
@@ -155,7 +184,6 @@ def get_posting_applications(
     return applications
 
 
-# Update an application's status.
 @router.patch("/{application_id}/status")
 def update_application_status(
     application_id: int,
@@ -163,25 +191,10 @@ def update_application_status(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    require_recruiter(current_user)
-
-    application = (
-        db.query(JobApplication)
-        .filter(JobApplication.id == application_id)
-        .first()
-    )
-
-    if not application:
-        raise HTTPException(
-            status_code=404,
-            detail="Application not found.",
-        )
-
-    # Confirm that this application belongs to the recruiter's posting.
-    get_owned_posting(
-        application.job_id,
-        current_user.id,
+    application = owned_application(
         db,
+        current_user,
+        application_id,
     )
 
     application.status = status_update.status
@@ -194,3 +207,4 @@ def update_application_status(
         "application_id": application.id,
         "status": application.status,
     }
+

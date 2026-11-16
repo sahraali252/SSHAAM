@@ -1,0 +1,76 @@
+# Sprint 2 AI Usage Log — Melissa Luk
+
+## 1. AI Tools Used
+
+| AI Tool | Purpose | Date |
+|---|---|---|
+| ChatGPT | Guidance on implementing recruiter application management and application status updates | 2026-11-10 |
+| ChatGPT | Assistance with creating the backend router and connecting the recruiter application functionality | 2026-11-12 |
+
+## 2. Prompts Used
+
+### Prompt 1
+
+**AI Tool:** ChatGPT
+
+**Date:** 2026-11-15
+
+**Prompt:**
+
+> How can I allow recruiters to view job applications, review candidate information, access resumes, and update application statuses?
+
+### Prompt 2
+
+**AI Tool:** ChatGPT
+
+**Date:** 2026-11-15
+
+**Prompt:**
+
+> How should I create and connect a backend router for recruiters to manage and review job applications?
+
+## 3. Generated Outputs
+
+### Output 1
+
+**Related Prompt:** Prompt 1
+
+**Summary of AI-generated output:**
+
+- Provided guidance on displaying job applications and candidate information.
+- Helped plan the functionality for reviewing applications and updating their statuses.
+- Provided suggestions for organizing the recruiter application management interface.
+
+### Output 2
+
+**Related Prompt:** Prompt 2
+
+**Summary of AI-generated output:**
+
+- Provided guidance on creating the recruiter applications backend router.
+- Helped with connecting backend functionality to the frontend.
+- Assisted with organizing application-related API endpoints and handling application status updates.
+
+## 4. Validation Activities
+
+Describe how the AI-generated output was checked.
+
+- [x] Reviewed the generated output
+- [x] Compared against project requirements
+- [x] Tested generated code/content, if applicable
+- [x] Checked for errors
+- [x] Verified information where necessary
+- [ ] Reviewed with a team member
+
+**Validation notes:**
+
+- Backend and frontend implementation steps were followed and reviewed.
+- The changes were committed successfully and pushed to GitHub.
+- Further review and testing are needed to confirm that all recruiter application management features work as expected.
+
+## 5. Final Decisions
+
+| AI Suggestion/Output | Decision | Reason |
+|---|---|---|
+| Backend router and API guidance | Used / Modified | Helped implement recruiter application management endpoints |
+| Frontend application review guidance | Used / Modified | Helped guide the recruiter-facing application review functionality |

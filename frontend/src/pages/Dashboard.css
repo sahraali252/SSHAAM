@@ -134,3 +134,4 @@
     margin-top: 36px;
   }
 }
+.dashboard-header { flex-wrap: wrap; }

@@ -1,0 +1,36 @@
+.cc-notifications { font-family: Inter, Arial, sans-serif; color: #171717; }
+.cc-notification-trigger { display: inline-flex; align-items: center; gap: 8px; padding: 9px 12px; border: 1px solid #d4d4d4; border-radius: 8px; background: #fff; color: #171717; cursor: pointer; font-size: 14px; font-weight: 600; white-space: nowrap; }
+.cc-notification-trigger:hover { background: #f5f5f5; }
+.cc-notification-badge { padding: 2px 6px; border-radius: 20px; background: #171717; color: #fff; font-size: 11px; min-width: 12px; text-align: center; }
+.cc-notification-dialog { position: fixed; inset: 0 0 0 auto; margin: 0; width: min(480px, 100vw); height: 100dvh; max-width: 100vw; max-height: 100dvh; padding: 0; border: 0; box-shadow: -12px 0 50px #0002; color: #171717; background: #fff; }
+.cc-notification-dialog::backdrop { background: #1116; }
+.cc-notification-panel { display: flex; flex-direction: column; height: 100%; }
+.cc-notification-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 26px 24px 20px; border-bottom: 1px solid #eee; }
+.cc-notification-heading h2 { margin: 0; font-size: 24px; letter-spacing: -.03em; }
+.cc-notification-heading p { margin: 6px 0 0; color: #737373; font-size: 14px; }
+.cc-notification-dialog button { border: 1px solid #d4d4d4; border-radius: 7px; background: #fff; color: #171717; cursor: pointer; padding: 8px 11px; font: inherit; font-size: 13px; }
+.cc-notification-dialog button:hover { background: #f5f5f5; }
+.cc-notification-dialog button:disabled { opacity: .5; cursor: wait; }
+.cc-notification-dialog :focus-visible, .cc-notification-trigger:focus-visible { outline: 2px solid #2563eb; outline-offset: 3px; }
+.cc-notification-toolbar { display: flex; align-items: center; justify-content: space-between; padding: 14px 24px; border-bottom: 1px solid #eee; font-size: 14px; }
+.cc-notification-toolbar label { display: flex; align-items: center; gap: 7px; }
+.cc-notification-toolbar input { accent-color: #171717; }
+.cc-notification-list { flex: 1; overflow-y: auto; padding: 0 24px; min-height: 0; }
+.cc-notification-item { margin: 16px 0; padding: 16px; border: 1px solid #e5e5e5; border-radius: 10px; overflow-wrap: anywhere; }
+.cc-notification-unread { background: #f7faff; border-color: #dbe5f4; }
+.cc-notification-item-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.cc-notification-item h3 { margin: 0; font-size: 15px; }
+.cc-notification-item p { margin: 9px 0; font-size: 14px; line-height: 1.55; white-space: pre-wrap; }
+.cc-notification-item time { display: block; font-size: 12px; color: #737373; line-height: 1.5; }
+.cc-unread-dot { background: #2563eb; border-radius: 50%; width: 7px; height: 7px; flex-shrink: 0; }
+.cc-notification-dialog .cc-mark-read { margin-top: 12px; }
+.cc-notification-empty { margin: 40px 0; color: #737373; line-height: 1.6; }
+.cc-notification-error { padding: 12px; border-radius: 8px; background: #fff1f2; color: #9f1239; font-size: 14px; }
+.cc-notification-footer { padding: 16px 24px; border-top: 1px solid #eee; font-size: 12px; color: #737373; }
+.cc-notification-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; padding-top: 14px; border-top: 1px solid #ddd; }
+.cc-notification-actions label { display: flex; flex-direction: column; gap: 6px; font-size: 13px; }
+.cc-notification-actions select, .cc-notification-actions textarea { width: 100%; box-sizing: border-box; padding: 9px; border: 1px solid #ccc; border-radius: 6px; background: #fff; color: #171717; font: inherit; }
+.cc-notification-actions textarea { resize: vertical; }
+.cc-notification-dialog .cc-notification-actions button { background: #171717; color: #fff; border-color: #171717; }
+.cc-notification-dialog .cc-load-more { display: block; margin: 12px auto 24px; }
+@media (max-width: 700px) { .cc-notification-dialog { width: 100vw; } }
