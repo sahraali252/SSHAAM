@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { summarizeApplications } from "../utils/applicationAnalytics";
 import "./Application.css";
 
 function ApplicationTracking() {
@@ -9,6 +10,7 @@ function ApplicationTracking() {
   // Loading and error states
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const analytics = summarizeApplications(applications);
 
   // Get locally saved job details for display
   const [jobDetails] = useState(() => {
@@ -150,10 +152,36 @@ function ApplicationTracking() {
             </div>
           </div>
 
-        ) : applications.length === 0 ? (
-          <p>You have not applied for any jobs yet.</p>
-
         ) : (
+          <>
+          <section className="application-analytics" aria-labelledby="analytics-heading">
+            <h2 id="analytics-heading">Application Analytics and History</h2>
+            <p>Total applications: <strong>{analytics.total}</strong></p>
+            <h3>Application status breakdown</h3>
+            <dl className="application-status-counts">
+              {Object.entries(analytics.statuses).map(([status, count]) => (
+                <div key={status}>
+                  <dt>{status === "Applied" ? "Pending (Applied)" : status}</dt>
+                  <dd>{count}</dd>
+                </div>
+              ))}
+            </dl>
+            <h3>Applications submitted over time</h3>
+            <p>Monthly submissions (UTC), from your first to latest application.</p>
+            {analytics.activity.length ? (
+              <table className="application-activity">
+                <caption>Applications submitted by month</caption>
+                <thead><tr><th scope="col">Month (UTC)</th><th scope="col">Applications submitted</th></tr></thead>
+                <tbody>
+                  {analytics.activity.map(({ month, count }) => (
+                    <tr key={month}><th scope="row">{month}</th><td>{count}</td></tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : <p>No application activity yet.</p>}
+          </section>
+          <h2>Application history</h2>
+          {applications.length === 0 && <p>You have not applied for any jobs yet.</p>}
           <div className="tracking-list">
 
             {applications.map((application) => {
@@ -232,6 +260,7 @@ function ApplicationTracking() {
             })}
 
           </div>
+          </>
         )}
 
         {/* Navigation links */}

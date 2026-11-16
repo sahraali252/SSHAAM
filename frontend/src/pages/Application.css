@@ -210,3 +210,34 @@
   margin-bottom: 12px;
   line-height: 1.6;
 }
+
+.application-analytics {
+  padding: 24px;
+  margin-bottom: 24px;
+  background: white;
+  border-radius: 10px;
+}
+
+.application-status-counts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.application-status-counts dd {
+  margin: 8px 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.application-activity {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.application-activity th,
+.application-activity td {
+  padding: 10px;
+  border-bottom: 1px solid #e2e8f0;
+}
