@@ -17,6 +17,7 @@ from app.routers import (
     public_job_postings_router,
     recruiter_applications_router,
     recruiter_postings_router,
+    recruiter_applications_router,
     resume_router,
 )
 from app.services.notifications import generate_deadline_reminders
@@ -65,6 +66,7 @@ app.include_router(resume_router.router)
 app.include_router(jobs_router.router)
 app.include_router(application_router.router)
 app.include_router(recruiter_postings_router.router)
+app.include_router(recruiter_applications_router.router)
 app.include_router(public_job_postings_router.router)
 
 

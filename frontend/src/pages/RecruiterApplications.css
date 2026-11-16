@@ -1,0 +1,177 @@
+
+.recruiter-applications-page {
+  min-height: 100vh;
+  background: #f5f7fb;
+  color: #263247;
+  font-family: Arial, sans-serif;
+}
+
+.applications-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 6%;
+  background: white;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.applications-header h1 {
+  margin: 0;
+  color: #243b63;
+}
+
+.applications-header p {
+  margin: 5px 0 0;
+  color: #64748b;
+}
+
+.applications-header nav {
+  display: flex;
+  gap: 12px;
+}
+
+.applications-header button,
+.filter-button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  background: #315b96;
+  color: white;
+  cursor: pointer;
+}
+
+.applications-content {
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 0 24px;
+}
+
+.applications-content h2 {
+  margin-bottom: 8px;
+}
+
+.applications-content > p {
+  color: #64748b;
+}
+
+.application-filters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  align-items: end;
+  margin: 28px 0;
+  padding: 22px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.application-filters label,
+.status-update {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-weight: 600;
+}
+
+.application-filters input,
+.application-filters select,
+.status-update select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  background: white;
+}
+
+.filter-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.candidate-list {
+  display: grid;
+  gap: 20px;
+}
+
+.candidate-card {
+  padding: 24px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.candidate-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.candidate-heading h3 {
+  margin: 0 0 6px;
+  color: #243b63;
+}
+
+.candidate-heading p {
+  margin: 0;
+  color: #64748b;
+}
+
+.candidate-status {
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: #e8efff;
+  color: #315b96;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.candidate-profile {
+  margin: 20px 0;
+  padding: 16px;
+  background: #f8fafc;
+  border-radius: 8px;
+}
+
+.candidate-profile h4 {
+  margin-top: 0;
+}
+
+.candidate-card a {
+  color: #315b96;
+  font-weight: 600;
+}
+
+.status-update {
+  max-width: 280px;
+  margin-top: 20px;
+}
+
+.applications-message {
+  padding: 12px;
+  background: #e8efff;
+  border-radius: 6px;
+}
+
+.no-applications {
+  padding: 30px;
+  text-align: center;
+  background: white;
+  border-radius: 8px;
+}
+
+@media (max-width: 600px) {
+  .applications-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .candidate-heading {
+    flex-direction: column;
+  }
+}

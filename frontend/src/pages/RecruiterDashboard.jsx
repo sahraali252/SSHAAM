@@ -237,9 +237,9 @@ function RecruiterDashboard() {
             Create Posting
           </button>
 
-          <button disabled title="Melissa will add this feature.">
-            Applications
-          </button>
+        <button onClick={() => navigate("/recruiter/applications")}>
+          Applications
+        </button>
         </nav>
 
         <div className="recruiter-header-actions">
