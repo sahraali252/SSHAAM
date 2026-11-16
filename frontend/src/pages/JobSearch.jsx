@@ -1,14 +1,20 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./JobSearch.css";
+import { parseApiDate } from "../utils/dates";
 
 function JobSearch() {
   // Store job search results
   const [jobs, setJobs] = useState([]);
+  const [postings, setPostings] = useState([]);
+  const [postingsLoading, setPostingsLoading] = useState(true);
+  const [postingsError, setPostingsError] = useState("");
+  const [jobsError, setJobsError] = useState("");
+  const [filters, setFilters] = useState({ keyword: "", location: "", category: "" });
 
   // Store search filters
   const [keyword, setKeyword] = useState("");
-  const [location, setLocation] = useState("Canada");
+  const [location, setLocation] = useState("");
   const [category, setCategory] = useState("");
 
   // Store loading state and selected job
@@ -21,6 +27,8 @@ function JobSearch() {
   // Fetch available jobs from the backend
   const fetchJobs = async () => {
     setLoading(true);
+    setJobsError("");
+    setFilters({ keyword, location, category });
 
     try {
       const params = new URLSearchParams();
@@ -51,6 +59,7 @@ function JobSearch() {
     } catch (error) {
       console.error("Unable to load jobs:", error);
       setJobs([]);
+      setJobsError("External listings are temporarily unavailable. You can still browse direct postings.");
     } finally {
       setLoading(false);
     }
@@ -59,7 +68,39 @@ function JobSearch() {
   // Load jobs when the page opens
   useEffect(() => {
     fetchJobs();
+    const controller = new AbortController();
+    const loadPostings = async () => {
+      try {
+        const response = await fetch("http://127.0.0.1:8000/job-postings/", { signal: controller.signal });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.detail || "Unable to load direct postings.");
+        setPostings(data);
+      } catch (error) {
+        if (error.name !== "AbortError") setPostingsError("Direct postings are temporarily unavailable. You can still browse external listings.");
+      } finally {
+        if (!controller.signal.aborted) setPostingsLoading(false);
+      }
+    };
+    loadPostings();
+    return () => controller.abort();
   }, []);
+
+  // Direct postings use the same submitted filters as the external search.
+  // Their API has no category field, so employment type is searchable here.
+  const directJobs = postings.filter(posting =>
+    `${posting.title} ${posting.company_name} ${posting.description}`.toLowerCase().includes(filters.keyword.trim().toLowerCase()) &&
+    (posting.location || "").toLowerCase().includes(filters.location.trim().toLowerCase()) &&
+    `${posting.employment_type} ${posting.title} ${posting.description}`.toLowerCase().includes(filters.category.trim().toLowerCase())
+  ).map(posting => ({
+    ...posting,
+    direct: true,
+    guid: posting.id,
+    companyName: posting.company_name,
+    employmentType: posting.employment_type,
+    locationRestrictions: [posting.location],
+    excerpt: posting.description,
+  }));
+  const visibleJobs = [...jobs, ...directJobs];
 
   // Handle job search
   const handleSearch = (event) => {
@@ -120,11 +161,12 @@ function JobSearch() {
           <hr />
 
           {/* Job description */}
-          <div
-            dangerouslySetInnerHTML={{
-              __html: selectedJob.description,
-            }}
-          />
+          {selectedJob.direct ? (
+            <div className="direct-job-description">{selectedJob.description}</div>
+          ) : (
+            <div dangerouslySetInnerHTML={{ __html: selectedJob.description }} />
+          )}
+          {selectedJob.deadline && <p><strong>Deadline:</strong> {parseApiDate(selectedJob.deadline)?.toLocaleString()}</p>}
 
           {/* Navigate to internal Job Application page */}
           <button
@@ -134,7 +176,7 @@ function JobSearch() {
               navigate("/apply", {
                 state: {
                   job: {
-                    id: String(selectedJob.guid),
+                    id: selectedJob.direct ? selectedJob.id : String(selectedJob.guid),
                     title: selectedJob.title,
                     company: selectedJob.companyName,
                     location: formatLocation(selectedJob),
@@ -163,10 +205,11 @@ function JobSearch() {
       <div className="job-search-container">
 
         <div className="job-search-header">
+          <p className="eyebrow">YOUR NEXT CHAPTER</p>
           <h1>Find Your Next Opportunity</h1>
 
           <p>
-            Search available job opportunities by keyword, location, or category.
+            Direct connections. More possibilities. Find your next role in one place.
           </p>
         </div>
 
@@ -176,6 +219,7 @@ function JobSearch() {
           onSubmit={handleSearch}
         >
           <input
+            aria-label="Job title or keyword"
             type="text"
             placeholder="Job title or keyword"
             value={keyword}
@@ -183,6 +227,7 @@ function JobSearch() {
           />
 
           <input
+            aria-label="Location"
             type="text"
             placeholder="Location"
             value={location}
@@ -190,6 +235,7 @@ function JobSearch() {
           />
 
           <input
+            aria-label="Category"
             type="text"
             placeholder="Category"
             value={category}
@@ -206,23 +252,26 @@ function JobSearch() {
 
         {/* Loading message */}
         {loading && <p>Loading jobs...</p>}
+        {postingsLoading && <p role="status">Loading direct postings...</p>}
+        {jobsError && <p role="alert">{jobsError}</p>}
+        {postingsError && <p role="alert">{postingsError}</p>}
 
         {/* Number of search results */}
-        {!loading && (
+        {!loading && !postingsLoading && (
           <p className="results-count">
-            {jobs.length}{" "}
-            {jobs.length === 1 ? "job" : "jobs"} found
+            {visibleJobs.length}{" "}
+            {visibleJobs.length === 1 ? "job" : "jobs"} found
           </p>
         )}
 
         {/* Display available jobs */}
         <div className="job-list">
-          {!loading &&
-            jobs.map((job) => (
+          {visibleJobs.map((job) => (
               <div
                 className="job-card"
-                key={job.guid}
+                key={`${job.direct ? "direct" : "external"}-${job.guid}`}
               >
+                <span className={`job-source ${job.direct ? "job-source-direct" : ""}`}>{job.direct ? "CareerConnect / Direct posting" : "Himalayas / External listing"}</span>
                 <h2>{job.title}</h2>
 
                 <p className="job-company">
@@ -232,6 +281,8 @@ function JobSearch() {
                 <p className="job-location">
                   {formatLocation(job)}
                 </p>
+                {job.employmentType && <p className="job-location">{job.employmentType}</p>}
+                {job.deadline && <p className="job-location">Deadline: {parseApiDate(job.deadline)?.toLocaleString()}</p>}
 
                 <p className="job-description">
                   {job.excerpt ||
@@ -249,7 +300,7 @@ function JobSearch() {
         </div>
 
         {/* No results message */}
-        {!loading && jobs.length === 0 && (
+          {!loading && !postingsLoading && !jobsError && !postingsError && visibleJobs.length === 0 && (
           <p>
             No jobs found. Try changing your search.
           </p>
