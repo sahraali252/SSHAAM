@@ -18,7 +18,13 @@ from pydantic import BaseModel, ValidationError
 from pypdf import PdfReader
 from supabase import create_client
 
-from app.schemas import AIJobMatchList, JobMatch, ResumeFeedbackResponse
+from app.schemas import (
+    AIJobMatchList,
+    AIMockInterview,
+    JobMatch,
+    MockInterviewQuestion,
+    ResumeFeedbackResponse,
+)
 
 load_dotenv()
 
@@ -31,6 +37,9 @@ RESUME_BUCKET = "resumes"
 MAX_MATCHED_POSTINGS = 15
 MAX_POSTING_CHARS = 700
 MAX_RESUME_CHARS_FOR_MATCHING = 5000
+MOCK_INTERVIEW_QUESTIONS = 10
+MAX_JOB_DESCRIPTION_CHARS = 4000
+MAX_RESUME_CHARS_FOR_INTERVIEW = 4000
 
 AI_UNAVAILABLE_MESSAGE = "AI service is unavailable, try again later."
 
@@ -86,6 +95,33 @@ Return:
 - strengths: specific strengths found in the resume.
 - improvements: for each improvement, the resume section it applies to, the issue, and a concrete suggestion.
 - missing_sections: standard resume sections that are absent (for example Skills, Education, Experience, Projects). Use an empty list if none are missing.
+
+<resume>
+{resume_text}
+</resume>
+"""
+
+MOCK_INTERVIEW_PROMPT = """You are an experienced interviewer preparing a mock interview for one specific job.
+
+{rules}
+- Base every question ONLY on the job details and the resume below. Do not invent facts about the company (products, clients, size, culture, tools) that are not written in the job details.
+- Write EXACTLY {count} questions.
+- Every question must be one of two types:
+  - "technical": tests a skill, tool, technology or concept mentioned in or clearly required by the job description.
+  - "role-specific": a realistic situation or task that someone in this exact role would handle on the job, asking how the candidate would approach it.
+- Do NOT write behavioural or generic questions: no "tell me about yourself", strengths/weaknesses, "describe a time when...", conflict with coworkers, career goals or "why do you want to work here".
+- Mix both types (about half each). When a resume is provided, tailor a few questions to where the candidate's experience meets the job's requirements, without assuming experience that is not in the resume.
+- If the job description is short, stay within the normal responsibilities of the job title.
+- tip: 1-2 sentences on how to answer that question well (what a strong answer covers).
+
+Return "questions": a list of {count} objects with question, type ("technical" or "role-specific") and tip.
+
+<job>
+Title: {title}
+Company: {company}
+Description:
+{description}
+</job>
 
 <resume>
 {resume_text}
@@ -293,3 +329,26 @@ def get_job_matches(resume_text: str, profile, postings) -> list[JobMatch]:
         )
 
     return sorted(matches.values(), key=lambda match: match.match_score, reverse=True)
+
+
+def get_mock_interview(title: str, company: str, description: str, resume_text: str | None = None) -> list[MockInterviewQuestion]:
+    """US-18: exactly MOCK_INTERVIEW_QUESTIONS technical / role-specific questions for one job."""
+    prompt = MOCK_INTERVIEW_PROMPT.format(
+        rules=SHARED_RULES,
+        count=MOCK_INTERVIEW_QUESTIONS,
+        title=prepare_text(title, 300),
+        company=prepare_text(company, 300) or "Not specified",
+        description=prepare_text(description, MAX_JOB_DESCRIPTION_CHARS) or "Not provided.",
+        resume_text=prepare_text(resume_text, MAX_RESUME_CHARS_FOR_INTERVIEW) if resume_text else "No resume provided.",
+    )
+    result = ask_gemini(prompt, AIMockInterview)
+
+    questions = [item for item in result.questions if item.question.strip()]
+    if len(questions) < MOCK_INTERVIEW_QUESTIONS:
+        logger.warning("Gemini returned %s mock interview questions", len(questions))
+        raise AIServiceError()
+
+    return [
+        MockInterviewQuestion(number=number, **item.model_dump())
+        for number, item in enumerate(questions[:MOCK_INTERVIEW_QUESTIONS], start=1)
+    ]
