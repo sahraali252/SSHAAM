@@ -86,3 +86,16 @@ it("shows the friendly message when there are no active postings", async () => {
   expect(await screen.findByText(/no active job postings/)).toBeTruthy();
   expect(screen.queryByRole("list", { name: "AI job match results" })).toBeNull();
 });
+
+it("shows only the top 4 matches, best first", async () => {
+  const many = [55, 12, 97, 80, 33, 71].map((score, index) => match(`p-${index}`, `Role ${score}`, score));
+  mockApi(200, { matches: many, message: null });
+  renderMatches();
+  fireEvent.click(screen.getByRole("button", { name: "Find my matches" }));
+
+  const list = await screen.findByRole("list", { name: "AI job match results" });
+  const titles = within(list).getAllByRole("heading").map((heading) => heading.textContent);
+  expect(titles).toEqual(["Role 97", "Role 80", "Role 71", "Role 55"]);
+  expect(screen.getByText("Your top 4 of 6 scored postings")).toBeTruthy();
+  expect(screen.queryByText("Role 12")).toBeNull();
+});
