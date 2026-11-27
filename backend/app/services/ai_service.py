@@ -18,6 +18,8 @@ from pydantic import BaseModel, ValidationError
 from pypdf import PdfReader
 from supabase import create_client
 
+from app.schemas import ResumeFeedbackResponse
+
 load_dotenv()
 
 logger = logging.getLogger(__name__)
@@ -187,3 +189,16 @@ def ask_gemini(prompt: str, response_schema: type[BaseModel]) -> BaseModel:
     except (ValidationError, ValueError) as error:
         logger.warning("Gemini returned invalid JSON for %s", response_schema.__name__)
         raise AIServiceError() from error
+
+
+# ---------------------------------------------------------------------------
+# Features
+# ---------------------------------------------------------------------------
+
+def get_resume_feedback(resume_text: str) -> ResumeFeedbackResponse:
+    """US-15: structured feedback on a resume."""
+    prompt = RESUME_FEEDBACK_PROMPT.format(
+        rules=SHARED_RULES,
+        resume_text=prepare_text(resume_text),
+    )
+    return ask_gemini(prompt, ResumeFeedbackResponse)
