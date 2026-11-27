@@ -145,3 +145,23 @@ class UnreadNotificationCount(BaseModel):
 
 class InterviewInvitationCreate(BaseModel):
     message: str = Field(default="You have been invited to an interview.", min_length=1, max_length=2000)
+
+
+# AI resume feedback (US-15). Also used as the Gemini response schema.
+class ResumeImprovement(BaseModel):
+    section: str
+    issue: str
+    suggestion: str
+
+
+class ResumeFeedbackResponse(BaseModel):
+    overall_score: int
+    summary: str
+    strengths: list[str]
+    improvements: list[ResumeImprovement]
+    missing_sections: list[str]
+
+    @field_validator("overall_score")
+    @classmethod
+    def clamp_score(cls, value):
+        return max(0, min(100, value))
