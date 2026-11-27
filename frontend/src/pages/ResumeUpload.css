@@ -204,17 +204,14 @@
   }
 }
 
-/* AI resume feedback (US-15) */
+/* AI resume feedback (US-15). Colors come from the shared theme in index.css;
+   .ai-feedback-button gets the navy pill style from the shared primary-button rule. */
 .ai-feedback {
   margin-top: 22px;
   padding: 22px;
-  border: 1px solid #dfe5ef;
-  border-radius: 10px;
+  border: 1px solid var(--cc-line);
+  border-radius: 16px;
   background: #ffffff;
-}
-
-.ai-feedback-header {
-  display: block;
 }
 
 .ai-feedback-header h2 {
@@ -224,46 +221,27 @@
 
 .ai-feedback-header p {
   margin: 6px 0 0;
-  color: #64748b;
+  color: var(--cc-muted);
   font-size: 14px;
 }
 
-/* Same look as the Replace resume button (.upload-button) */
 .ai-feedback-button {
   width: 100%;
   margin-top: 16px;
-  padding: 12px;
-  border: none;
-  border-radius: 7px;
-  background: #2563eb;
-  color: #ffffff;
-  cursor: pointer;
-  font-size: 15px;
-  font-weight: 700;
-}
-
-.ai-feedback-button:hover {
-  background: #1d4ed8;
-}
-
-.ai-feedback-button:disabled {
-  cursor: not-allowed;
-  opacity: 0.65;
 }
 
 .ai-status {
   margin: 16px 0 0;
-  color: #64748b;
+  color: var(--cc-muted);
 }
 
 .ai-error {
   margin: 16px 0 0;
-  padding: 12px;
-  border: 1px solid #fecaca;
-  border-radius: 7px;
-  background: #fef2f2;
-  color: #b91c1c;
-  font-weight: 700;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: #fff1f2;
+  color: #9f2434;
+  font-weight: 600;
 }
 
 .ai-feedback-results {
@@ -276,44 +254,44 @@
   display: flex;
   align-items: center;
   gap: 16px;
-  padding: 16px;
-  border-radius: 10px;
-  background: #eff6ff;
+  padding: 16px 18px;
+  border-radius: 16px;
+  background: var(--cc-glacier);
 }
 
 .ai-score-card p {
   margin: 0;
+  color: var(--cc-ink);
   line-height: 1.5;
 }
 
 .ai-score {
   flex: 0 0 auto;
+  color: var(--cc-ink);
   font-size: 32px;
-  font-weight: 800;
+  font-weight: 750;
+  letter-spacing: -0.04em;
 }
 
 .ai-score span {
-  color: #64748b;
+  color: var(--cc-muted);
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 600;
+  letter-spacing: 0;
 }
 
 .ai-score-high {
-  color: #166534;
-}
-
-.ai-score-medium {
-  color: #b45309;
+  box-shadow: inset 0 -4px 0 var(--cc-lemon);
 }
 
 .ai-score-low {
-  color: #b91c1c;
+  color: #9f2434;
 }
 
 .ai-feedback-card {
-  padding: 16px;
-  border: 1px solid #dfe5ef;
-  border-radius: 10px;
+  padding: 16px 18px;
+  border: 1px solid var(--cc-line);
+  border-radius: 16px;
 }
 
 .ai-feedback-card h3 {
@@ -324,12 +302,13 @@
 .ai-feedback-card ul {
   margin: 0;
   padding-left: 20px;
+  color: var(--cc-ink);
   line-height: 1.6;
 }
 
 .ai-improvement {
   padding: 12px 0;
-  border-top: 1px solid #eef2f7;
+  border-top: 1px solid var(--cc-line);
 }
 
 .ai-improvement:first-of-type {
@@ -339,6 +318,7 @@
 
 .ai-improvement p {
   margin: 6px 0 0;
+  color: var(--cc-ink);
   font-size: 14px;
   line-height: 1.5;
 }
@@ -351,17 +331,17 @@
 
 .ai-section-tag {
   display: inline-block;
-  padding: 4px 9px;
+  padding: 4px 10px;
   border-radius: 999px;
-  background: #eff6ff;
-  color: #1d4ed8;
+  background: var(--cc-glacier);
+  color: var(--cc-ink);
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .ai-disclaimer {
   margin: 0;
-  color: #64748b;
+  color: var(--cc-muted);
   font-size: 12px;
 }
 
