@@ -83,3 +83,13 @@ it("closes the menu on Escape and on an outside click", () => {
   fireEvent.mouseDown(document.body);
   expect(screen.queryByRole("menu")).toBeNull();
 });
+
+it("shares a ready-made url when one is passed instead of the ?posting= link", () => {
+  const external = "https://himalayas.app/companies/acme/jobs/react-developer";
+  render(<ShareJobButton posting={posting} url={external} />);
+  fireEvent.click(screen.getByRole("button", { name: "Share" }));
+  expect(screen.getByRole("menuitem", { name: "LinkedIn" }).getAttribute("href"))
+    .toBe(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(external)}`);
+  expect(screen.getByRole("menuitem", { name: "Email" }).getAttribute("href")).toContain(encodeURIComponent(external));
+  expect(screen.getByRole("menuitem", { name: "Email" }).getAttribute("href")).not.toContain("posting");
+});
