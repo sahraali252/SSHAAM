@@ -5,6 +5,9 @@ import "./AiJobMatches.css";
 
 const scoreLevel = (score) => (score >= 75 ? "high" : score >= 50 ? "medium" : "low");
 
+// Only the best few matches are shown to keep the page focused.
+export const TOP_MATCHES_SHOWN = 4;
+
 // US-16: AI match scores for active CareerConnect postings, loaded on demand to save AI quota
 export default function AiJobMatches() {
   const navigate = useNavigate();
@@ -76,16 +79,22 @@ export default function AiJobMatches() {
       {message && <p className="ai-matches-status">{message}</p>}
 
       {matches && matches.length > 0 && (
+        <p className="ai-matches-summary">
+          Your top {Math.min(matches.length, TOP_MATCHES_SHOWN)} of {matches.length} scored{" "}
+          {matches.length === 1 ? "posting" : "postings"}
+        </p>
+      )}
+
+      {matches && matches.length > 0 && (
         <ol className="ai-match-list" aria-label="AI job match results">
-          {matches.map((match) => (
+          {matches.slice(0, TOP_MATCHES_SHOWN).map((match) => (
             <li className="ai-match-card" key={match.posting_id}>
-              <div
+              <span
                 className={`ai-match-score ai-match-score-${scoreLevel(match.match_score)}`}
                 aria-label={`Match score ${match.match_score} out of 100`}
               >
-                {match.match_score}
-                <span>% match</span>
-              </div>
+                {match.match_score}% match
+              </span>
 
               <div className="ai-match-body">
                 <h3>{match.title}</h3>
