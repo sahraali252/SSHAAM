@@ -80,6 +80,7 @@ CareerConnect provides a centralized platform where job seekers can organize and
 - **US-13 — Save Favorite Jobs:** As a job seeker, I want to save jobs as favourites so that I can easily return to opportunities I am interested in.
 - **US-14 — Create Job Posting:** As a recruiter, I want to create a job posting so that I can advertise an available position to job seekers.
 - **US-15 — AI-Assisted Resume Feedback:** As a job seeker, I want to receive AI-assisted feedback on my resume so that I can identify areas for improvement.
+- **US-17 — Share Job Posting:** As a job seeker or recruiter, I want to share a CareerConnect job posting by link, email or LinkedIn so that other people can discover and apply to the opportunity.
 
 ## Local Setup
 
