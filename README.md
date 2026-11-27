@@ -82,6 +82,7 @@ CareerConnect provides a centralized platform where job seekers can organize and
 - **US-15 — AI-Assisted Resume Feedback:** As a job seeker, I want to receive AI-assisted feedback on my resume so that I can identify areas for improvement.
 - **US-16 — AI Job Matching and Scoring:** As a job seeker, I want the AI to score how well my resume and profile match the active job postings on CareerConnect so that I can focus on the opportunities that fit me best.
 - **US-17 — Share Job Posting:** As a job seeker or recruiter, I want to share a CareerConnect job posting by link, email or LinkedIn so that other people can discover and apply to the opportunity.
+- **US-18 — AI Mock Interview Practice:** As a job seeker, I want to practice a mock interview with AI-generated questions for a job I applied to so that I can prepare for the technical and role-specific questions I am likely to be asked.
 
 ## Local Setup
 

@@ -227,3 +227,33 @@ class JobMatch(BaseModel):
 class JobMatchesResponse(BaseModel):
     matches: list[JobMatch]
     message: str | None = None
+
+
+# AI mock interview (US-18)
+class MockInterviewRequest(BaseModel):
+    """Job details for external (Himalayas) jobs that are not in our database."""
+    title: str = Field(default="", max_length=300)
+    company: str = Field(default="", max_length=300)
+    description: str = Field(default="", max_length=20000)
+
+
+class AIMockInterviewQuestion(BaseModel):
+    question: str
+    type: Literal["technical", "role-specific"]
+    tip: str
+
+    @field_validator("type", mode="before")
+    @classmethod
+    def normalize_type(cls, value):
+        if isinstance(value, str):
+            return value.strip().lower().replace("_", "-").replace(" ", "-")
+        return value
+
+
+class AIMockInterview(BaseModel):
+    """Gemini response schema."""
+    questions: list[AIMockInterviewQuestion]
+
+
+class MockInterviewQuestion(AIMockInterviewQuestion):
+    number: int
