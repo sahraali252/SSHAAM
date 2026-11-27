@@ -98,3 +98,17 @@
     grid-template-columns: 1fr;
   }
 }
+
+
+/* Apply and Share side by side at the bottom of each card (US-17) */
+.opportunity-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.opportunity-actions .opportunity-apply-button {
+  flex: 1;
+  margin-top: 0;
+}

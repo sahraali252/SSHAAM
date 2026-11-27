@@ -187,3 +187,42 @@
     font-size: 32px;
   }
 }
+
+
+/* Apply and Share on one line in the job details view (US-17).
+   Application.css makes .apply-button full width globally, so Apply fills
+   the row and Share sits on its right. */
+.job-detail-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.job-detail-actions .apply-button {
+  flex: 1;
+  width: auto;
+  margin-top: 0;
+}
+
+.job-detail-actions .share-job {
+  flex: 0 0 auto;
+}
+
+.job-detail-actions .share-job-menu {
+  right: 0;
+  left: auto;
+}
+
+/* View Details and Share at the bottom of each job card (US-17) */
+.job-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: auto;
+}
+
+#root .job-card-actions .job-details-button {
+  margin-top: 0;
+}
