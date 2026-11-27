@@ -165,3 +165,39 @@ class ResumeFeedbackResponse(BaseModel):
     @classmethod
     def clamp_score(cls, value):
         return max(0, min(100, value))
+
+
+# AI job matching (US-16). AIJobMatchList is the Gemini response schema.
+class AIJobMatch(BaseModel):
+    job_ref: str
+    match_score: int
+    matching_skills: list[str]
+    missing_skills: list[str]
+    reason: str
+
+    @field_validator("match_score")
+    @classmethod
+    def clamp_score(cls, value):
+        return max(0, min(100, value))
+
+
+class AIJobMatchList(BaseModel):
+    matches: list[AIJobMatch]
+
+
+class JobMatch(BaseModel):
+    posting_id: str
+    title: str
+    company_name: str
+    location: str
+    employment_type: str
+    description: str
+    match_score: int
+    matching_skills: list[str]
+    missing_skills: list[str]
+    reason: str
+
+
+class JobMatchesResponse(BaseModel):
+    matches: list[JobMatch]
+    message: str | None = None
