@@ -1,0 +1,14 @@
+/* "Already applied" pill that replaces Apply buttons (theme colors from index.css) */
+.already-applied {
+  display: inline-flex;
+  align-items: center;
+  padding: 11px 20px;
+  border: 1px solid var(--cc-glacier-border);
+  border-radius: 999px;
+  background: var(--cc-glacier);
+  color: var(--cc-ink);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+  white-space: nowrap;
+}

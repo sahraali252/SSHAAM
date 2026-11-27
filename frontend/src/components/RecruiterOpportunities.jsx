@@ -2,12 +2,16 @@ import { parseApiDate } from "../utils/dates";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ShareJobButton from "./ShareJobButton";
+import AlreadyApplied from "./AlreadyApplied";
+import useAppliedJobs from "../hooks/useAppliedJobs";
+import { normalizeJobId } from "../utils/applications";
 import "./RecruiterOpportunities.css";
 
 const API_URL = "http://127.0.0.1:8000";
 
 function RecruiterOpportunities() {
   const navigate = useNavigate();
+  const appliedJobs = useAppliedJobs();
 
   const [postings, setPostings] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -45,7 +49,7 @@ function RecruiterOpportunities() {
     navigate("/apply", {
       state: {
         job: {
-          id: posting.id,
+          id: normalizeJobId(posting.id),
           title: posting.title,
           company: posting.company_name,
           location: posting.location,
@@ -119,12 +123,16 @@ function RecruiterOpportunities() {
             </p>
 
             <div className="opportunity-actions">
-              <button
-                className="opportunity-apply-button"
-                onClick={() => openApplication(posting)}
-              >
-                View and Apply
-              </button>
+              {appliedJobs.has(normalizeJobId(posting.id)) ? (
+                <AlreadyApplied status={appliedJobs.get(normalizeJobId(posting.id))} />
+              ) : (
+                <button
+                  className="opportunity-apply-button"
+                  onClick={() => openApplication(posting)}
+                >
+                  View and Apply
+                </button>
+              )}
               <ShareJobButton posting={posting} />
             </div>
           </article>
