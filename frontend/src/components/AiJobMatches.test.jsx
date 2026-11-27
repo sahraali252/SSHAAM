@@ -43,7 +43,7 @@ it("renders AI job matches sorted by score with skills and reasons", async () =>
   expect(screen.getByText("Frontend Developer reason.")).toBeTruthy();
   expect(within(list).getAllByText("React")).toHaveLength(3);
   expect(within(list).getAllByText("Docker")).toHaveLength(3);
-  expect(screen.getByRole("button", { name: "Refresh matches" })).toBeTruthy();
+  expect(screen.queryByRole("button", { name: /matches/ })).toBeNull(); // no refresh button once results are shown
 
   const [url, options] = fetchMock.mock.calls[0];
   expect(url).toBe("http://127.0.0.1:8000/ai/job-matches");
