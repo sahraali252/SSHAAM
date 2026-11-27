@@ -187,3 +187,17 @@
     font-size: 32px;
   }
 }
+
+
+/* Apply and Share on the job details view (US-17) */
+.job-detail-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.job-detail-actions .apply-button {
+  margin-top: 0;
+}
