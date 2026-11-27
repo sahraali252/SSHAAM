@@ -55,7 +55,7 @@ it("links each match to the existing apply flow for that posting", async () => {
   mockApi();
   renderMatches();
   fireEvent.click(screen.getByRole("button", { name: "Find my matches" }));
-  const best = (await screen.findByRole("heading", { name: "Frontend Developer" })).parentElement;
+  const best = (await screen.findByRole("heading", { name: "Frontend Developer" })).closest("li");
   fireEvent.click(within(best).getByRole("button", { name: "Apply for this job" }));
   expect(JSON.parse(screen.getByTestId("apply-state").textContent).job).toEqual({
     id: "p-high", title: "Frontend Developer", company: "Frontend Developer Inc", location: "Montreal",
