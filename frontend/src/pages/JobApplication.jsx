@@ -36,6 +36,8 @@ function JobApplication() {
         title: job.title,
         company: job.company,
         location: job.location,
+        // Used by the AI mock interview for external jobs (US-18)
+        description: (job.description || "").slice(0, 4000),
       };
 
       localStorage.setItem(
