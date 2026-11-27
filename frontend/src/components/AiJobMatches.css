@@ -161,13 +161,24 @@
   color: var(--cc-muted);
 }
 
-/* Keeps Apply aligned at the bottom of every card in the grid */
-.ai-match-body .job-details-button {
-  margin-top: auto;
+/* Score chip on the left, Apply button on the top right of each card */
+.ai-match-top {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  margin-bottom: 14px;
 }
 
-.ai-match-body > :nth-last-child(2) {
-  margin-bottom: 16px;
+.ai-match-top .ai-match-score {
+  margin-bottom: 0;
+}
+
+.ai-match-top .ai-match-apply {
+  flex: 0 0 auto;
+  margin-top: 0;
 }
 
 .ai-matches-disclaimer {

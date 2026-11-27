@@ -89,12 +89,21 @@ export default function AiJobMatches() {
         <ol className="ai-match-list" aria-label="AI job match results">
           {matches.slice(0, TOP_MATCHES_SHOWN).map((match) => (
             <li className="ai-match-card" key={match.posting_id}>
-              <span
-                className={`ai-match-score ai-match-score-${scoreLevel(match.match_score)}`}
-                aria-label={`Match score ${match.match_score} out of 100`}
-              >
-                {match.match_score}% match
-              </span>
+              <div className="ai-match-top">
+                <span
+                  className={`ai-match-score ai-match-score-${scoreLevel(match.match_score)}`}
+                  aria-label={`Match score ${match.match_score} out of 100`}
+                >
+                  {match.match_score}% match
+                </span>
+                <button
+                  className="job-details-button ai-match-apply"
+                  type="button"
+                  onClick={() => apply(match)}
+                >
+                  Apply for this job
+                </button>
+              </div>
 
               <div className="ai-match-body">
                 <h3>{match.title}</h3>
@@ -117,14 +126,6 @@ export default function AiJobMatches() {
                     ))}
                   </div>
                 )}
-
-                <button
-                  className="job-details-button"
-                  type="button"
-                  onClick={() => apply(match)}
-                >
-                  Apply for this job
-                </button>
               </div>
             </li>
           ))}
