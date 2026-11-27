@@ -55,26 +55,45 @@
   margin: 0 0 12px;
 }
 
-.mock-interview-card {
-  margin-top: 24px;
-  padding: 24px;
+.mock-interview-intro {
+  margin: 20px 0 0;
+  color: var(--cc-muted);
+  font-size: 14px;
+}
+
+.mock-interview-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mock-interview-item {
+  padding: 18px 20px;
   border: 1px solid var(--cc-line);
-  border-radius: 20px;
+  border-radius: 16px;
   background: var(--cc-bg);
 }
 
 .mock-interview-meta {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
   gap: 10px;
 }
 
-.mock-interview-progress {
-  color: var(--cc-muted);
-  font-size: 14px;
-  font-weight: 600;
+.mock-interview-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: var(--cc-blue);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
   font-variant-numeric: tabular-nums;
 }
 
@@ -96,49 +115,26 @@
 }
 
 .mock-interview-question {
-  margin: 18px 0 20px;
-  font-size: 20px;
-  font-weight: 650;
-  line-height: 1.4;
-  letter-spacing: -0.01em;
-}
-
-.mock-interview-label {
-  display: block;
-  margin-bottom: 8px;
+  margin: 12px 0 0;
   color: var(--cc-ink);
-  font-size: 14px;
+  font-size: 17px;
   font-weight: 600;
-}
-
-.mock-interview-card textarea {
-  width: 100%;
+  line-height: 1.45;
 }
 
 .mock-interview-tip-toggle {
-  margin-top: 14px;
+  margin-top: 12px;
   cursor: pointer;
 }
 
 .mock-interview-tip {
   margin: 12px 0 0;
-  padding: 14px 16px;
+  padding: 12px 16px;
   border-left: 3px solid var(--cc-blue);
   border-radius: 12px;
   background: #ffffff;
   color: var(--cc-ink);
   line-height: 1.5;
-}
-
-.mock-interview-navigation {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  margin-top: 24px;
-}
-
-.mock-interview-navigation .secondary-button {
-  cursor: pointer;
 }
 
 /* "Practice interview" button on each application card */

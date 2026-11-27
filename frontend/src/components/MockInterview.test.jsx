@@ -41,7 +41,7 @@ function renderHistory() {
 async function openInterview(title) {
   const card = (await screen.findByRole("heading", { name: title })).closest(".tracking-card");
   fireEvent.click(within(card).getByRole("button", { name: "Practice interview" }));
-  return screen.findByText("Question 1 of 10");
+  return screen.findByRole("list", { name: "Interview questions" });
 }
 
 const interviewCalls = (fetchMock) => fetchMock.mock.calls.filter(([url]) => url.includes("/ai/mock-interview/"));
@@ -63,7 +63,7 @@ it("requests the interview for that application with the saved job details", asy
   const card = (await screen.findByRole("heading", { name: "Remote React developer" })).closest(".tracking-card");
   fireEvent.click(within(card).getByRole("button", { name: "Practice interview" }));
   expect(screen.getByRole("status").textContent).toMatch(/Generating 10 interview questions/);
-  await screen.findByText("Question 1 of 10");
+  await screen.findByRole("list", { name: "Interview questions" });
 
   const [url, options] = interviewCalls(fetchMock)[0];
   expect(url).toBe("http://127.0.0.1:8000/ai/mock-interview/12");
@@ -72,57 +72,44 @@ it("requests the interview for that application with the saved job details", asy
   expect(JSON.parse(options.body)).toEqual({ title: "Remote React developer", company: "Acme", description: "React work" });
 });
 
-it("navigates one question at a time with type badges, kept answers and Restart at the end", async () => {
+it("lists all 10 questions line by line with their type, without step navigation", async () => {
   const fetchMock = mockApi();
   renderHistory();
-  await openInterview("Backend developer");
+  const list = await openInterview("Backend developer");
 
-  expect(screen.getByText("Question text 1?")).toBeTruthy();
-  expect(screen.getByText("Technical")).toBeTruthy();
-  expect(screen.getByRole("button", { name: "Previous" }).disabled).toBe(true);
-
-  const answer = screen.getByLabelText("Your practice answer");
-  fireEvent.change(answer, { target: { value: "My first answer" } });
-
-  fireEvent.click(screen.getByRole("button", { name: "Next" }));
-  expect(screen.getByText("Question 2 of 10")).toBeTruthy();
-  expect(screen.getByText("Question text 2?")).toBeTruthy();
-  expect(screen.getByText("Role-specific")).toBeTruthy();
-  expect(screen.getByLabelText("Your practice answer").value).toBe("");
-
-  fireEvent.click(screen.getByRole("button", { name: "Previous" }));
-  expect(screen.getByLabelText("Your practice answer").value).toBe("My first answer");
-
-  for (let n = 1; n < 10; n += 1) fireEvent.click(screen.getByRole("button", { name: "Next" }));
-  expect(screen.getByText("Question 10 of 10")).toBeTruthy();
-  expect(screen.queryByRole("button", { name: "Next" })).toBeNull();
-
-  fireEvent.click(screen.getByRole("button", { name: "Restart" }));
-  expect(screen.getByText("Question 1 of 10")).toBeTruthy();
-  expect(screen.getByLabelText("Your practice answer").value).toBe("");
-
-  // Practice answers are never sent anywhere: only the one request to generate questions.
+  const items = within(list).getAllByRole("listitem");
+  expect(items).toHaveLength(10);
+  items.forEach((item, index) => {
+    expect(within(item).getByText(`Question text ${index + 1}?`)).toBeTruthy();
+    expect(within(item).getByText(index % 2 === 0 ? "Technical" : "Role-specific")).toBeTruthy();
+    expect(within(item).getByRole("button", { name: "Show tip" })).toBeTruthy();
+  });
+  for (const name of ["Next", "Previous", "Restart"]) {
+    expect(screen.queryByRole("button", { name })).toBeNull();
+  }
+  expect(screen.queryByText(/Question \d+ of 10/)).toBeNull();
   expect(interviewCalls(fetchMock)).toHaveLength(1);
 });
 
-it("toggles the tip and hides it again on the next question", async () => {
+it("shows and hides each question's tip independently", async () => {
   mockApi();
   renderHistory();
-  await openInterview("Backend developer");
+  const list = await openInterview("Backend developer");
+  const [first, second] = within(list).getAllByRole("listitem");
 
-  const toggle = screen.getByRole("button", { name: "Show tip" });
   expect(screen.queryByText("Tip number 1.")).toBeNull();
-  fireEvent.click(toggle);
-  expect(screen.getByText("Tip number 1.")).toBeTruthy();
-  expect(screen.getByRole("button", { name: "Hide tip" }).getAttribute("aria-expanded")).toBe("true");
-
-  fireEvent.click(screen.getByRole("button", { name: "Hide tip" }));
-  expect(screen.queryByText("Tip number 1.")).toBeNull();
-
-  fireEvent.click(screen.getByRole("button", { name: "Show tip" }));
-  fireEvent.click(screen.getByRole("button", { name: "Next" }));
+  fireEvent.click(within(first).getByRole("button", { name: "Show tip" }));
+  expect(within(first).getByText("Tip number 1.")).toBeTruthy();
+  expect(within(first).getByRole("button", { name: "Hide tip" }).getAttribute("aria-expanded")).toBe("true");
   expect(screen.queryByText("Tip number 2.")).toBeNull();
-  expect(screen.getByRole("button", { name: "Show tip" })).toBeTruthy();
+
+  fireEvent.click(within(second).getByRole("button", { name: "Show tip" }));
+  expect(within(first).getByText("Tip number 1.")).toBeTruthy();
+  expect(within(second).getByText("Tip number 2.")).toBeTruthy();
+
+  fireEvent.click(within(first).getByRole("button", { name: "Hide tip" }));
+  expect(screen.queryByText("Tip number 1.")).toBeNull();
+  expect(within(second).getByText("Tip number 2.")).toBeTruthy();
 });
 
 it("shows the friendly error on 503 and can try again", async () => {
@@ -134,7 +121,7 @@ it("shows the friendly error on 503 and can try again", async () => {
   const alert = await screen.findByRole("alert");
   expect(alert.textContent).toContain("AI service is unavailable, try again later.");
   fireEvent.click(within(alert).getByRole("button", { name: "Try again" }));
-  expect(await screen.findByText("Question 1 of 10")).toBeTruthy();
+  expect(await screen.findByRole("list", { name: "Interview questions" })).toBeTruthy();
 });
 
 it("goes back to the application history", async () => {
@@ -143,5 +130,5 @@ it("goes back to the application history", async () => {
   await openInterview("Backend developer");
   fireEvent.click(screen.getByRole("button", { name: /Back to applications/ }));
   expect(screen.getByRole("heading", { name: "Remote React developer" })).toBeTruthy();
-  expect(screen.queryByText(/Question \d+ of 10/)).toBeNull();
+  expect(screen.queryByRole("list", { name: "Interview questions" })).toBeNull();
 });

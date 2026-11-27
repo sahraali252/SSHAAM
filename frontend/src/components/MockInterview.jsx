@@ -4,16 +4,14 @@ import "./MockInterview.css";
 
 const TYPE_LABELS = { technical: "Technical", "role-specific": "Role-specific" };
 
-// US-18: practice 10 AI-generated questions for one application, one at a time.
-// Practice answers stay in this component's state only (never sent anywhere).
+// US-18: the 10 AI-generated questions for one application, listed one per
+// line, each with its own Show tip toggle.
 export default function MockInterview({ application, job, onClose }) {
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [attempt, setAttempt] = useState(0);
-  const [index, setIndex] = useState(0);
-  const [answers, setAnswers] = useState({});
-  const [showTip, setShowTip] = useState(false);
+  const [openTips, setOpenTips] = useState(() => new Set());
 
   useEffect(() => {
     const controller = new AbortController();
@@ -40,18 +38,14 @@ export default function MockInterview({ application, job, onClose }) {
     setAttempt((current) => current + 1);
   };
 
-  const goTo = (nextIndex) => {
-    setIndex(nextIndex);
-    setShowTip(false);
+  const toggleTip = (index) => {
+    setOpenTips((current) => {
+      const next = new Set(current);
+      if (next.has(index)) next.delete(index);
+      else next.add(index);
+      return next;
+    });
   };
-
-  const restart = () => {
-    setAnswers({});
-    goTo(0);
-  };
-
-  const question = questions[index];
-  const isLast = index === questions.length - 1;
 
   return (
     <section className="mock-interview" aria-label="Mock interview">
@@ -78,61 +72,48 @@ export default function MockInterview({ application, job, onClose }) {
         </div>
       )}
 
-      {!loading && !error && question && (
-        <div className="mock-interview-card">
-          <div className="mock-interview-meta">
-            <span className="mock-interview-progress">
-              Question {index + 1} of {questions.length}
-            </span>
-            <span className={`mock-interview-type mock-interview-type-${question.type}`}>
-              {TYPE_LABELS[question.type] || "Question"}
-            </span>
-          </div>
+      {!loading && !error && questions.length > 0 && (
+        <>
+          <p className="mock-interview-intro">
+            Practice answering each question out loud, then open its tip to see what a strong answer covers.
+          </p>
 
-          <h3 className="mock-interview-question">{question.question}</h3>
+          <ol className="mock-interview-list" aria-label="Interview questions">
+            {questions.map((question, index) => {
+              const tipOpen = openTips.has(index);
+              const tipId = `mock-interview-tip-${index}`;
 
-          <label className="mock-interview-label" htmlFor="mock-interview-answer">
-            Your practice answer
-          </label>
-          <textarea
-            id="mock-interview-answer"
-            rows={6}
-            placeholder="Type your answer to practice. It stays in your browser and is not sent anywhere."
-            value={answers[index] || ""}
-            onChange={(event) => setAnswers((current) => ({ ...current, [index]: event.target.value }))}
-          />
+              return (
+                <li className="mock-interview-item" key={`${index}-${question.question}`}>
+                  <div className="mock-interview-meta">
+                    <span className="mock-interview-number">{index + 1}</span>
+                    <span className={`mock-interview-type mock-interview-type-${question.type}`}>
+                      {TYPE_LABELS[question.type] || "Question"}
+                    </span>
+                  </div>
 
-          <button
-            className="secondary-button mock-interview-tip-toggle"
-            type="button"
-            aria-expanded={showTip}
-            onClick={() => setShowTip((current) => !current)}
-          >
-            {showTip ? "Hide tip" : "Show tip"}
-          </button>
-          {showTip && <p className="mock-interview-tip">{question.tip || "No tip for this question."}</p>}
+                  <p className="mock-interview-question">{question.question}</p>
 
-          <div className="mock-interview-navigation">
-            <button
-              className="secondary-button"
-              type="button"
-              onClick={() => goTo(index - 1)}
-              disabled={index === 0}
-            >
-              Previous
-            </button>
+                  <button
+                    className="secondary-button mock-interview-tip-toggle"
+                    type="button"
+                    aria-expanded={tipOpen}
+                    aria-controls={tipId}
+                    onClick={() => toggleTip(index)}
+                  >
+                    {tipOpen ? "Hide tip" : "Show tip"}
+                  </button>
 
-            {isLast ? (
-              <button className="primary-button" type="button" onClick={restart}>
-                Restart
-              </button>
-            ) : (
-              <button className="primary-button" type="button" onClick={() => goTo(index + 1)}>
-                Next
-              </button>
-            )}
-          </div>
-        </div>
+                  {tipOpen && (
+                    <p className="mock-interview-tip" id={tipId}>
+                      {question.tip || "No tip for this question."}
+                    </p>
+                  )}
+                </li>
+              );
+            })}
+          </ol>
+        </>
       )}
     </section>
   );
