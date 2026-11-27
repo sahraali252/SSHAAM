@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getJobMatches } from "../services/ai";
+import { normalizeJobId } from "../utils/applications";
+import AlreadyApplied from "./AlreadyApplied";
 import "./AiJobMatches.css";
 
 const scoreLevel = (score) => (score >= 75 ? "high" : score >= 50 ? "medium" : "low");
@@ -9,7 +11,10 @@ const scoreLevel = (score) => (score >= 75 ? "high" : score >= 50 ? "medium" : "
 export const TOP_MATCHES_SHOWN = 4;
 
 // US-16: AI match scores for active CareerConnect postings, loaded on demand to save AI quota
-export default function AiJobMatches() {
+const NO_APPLICATIONS = new Map();
+
+// appliedJobs: normalized job id -> status (from useAppliedJobs on the job search page)
+export default function AiJobMatches({ appliedJobs = NO_APPLICATIONS }) {
   const navigate = useNavigate();
   const [matches, setMatches] = useState(null);
   const [message, setMessage] = useState("");
@@ -38,7 +43,7 @@ export default function AiJobMatches() {
     navigate("/apply", {
       state: {
         job: {
-          id: match.posting_id,
+          id: normalizeJobId(match.posting_id),
           title: match.title,
           company: match.company_name,
           location: match.location,
@@ -98,13 +103,17 @@ export default function AiJobMatches() {
                 >
                   {match.match_score}% match
                 </span>
-                <button
-                  className="job-details-button ai-match-apply"
-                  type="button"
-                  onClick={() => apply(match)}
-                >
-                  Apply for this job
-                </button>
+                {appliedJobs.has(normalizeJobId(match.posting_id)) ? (
+                  <AlreadyApplied status={appliedJobs.get(normalizeJobId(match.posting_id))} />
+                ) : (
+                  <button
+                    className="job-details-button ai-match-apply"
+                    type="button"
+                    onClick={() => apply(match)}
+                  >
+                    Apply for this job
+                  </button>
+                )}
               </div>
 
               <div className="ai-match-body">

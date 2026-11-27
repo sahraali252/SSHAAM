@@ -5,6 +5,9 @@ import { parseApiDate } from "../utils/dates";
 import AiJobMatches from "../components/AiJobMatches";
 import { getExternalJobUrl } from "../utils/shareJob";
 import ShareJobButton from "../components/ShareJobButton";
+import AlreadyApplied from "../components/AlreadyApplied";
+import useAppliedJobs from "../hooks/useAppliedJobs";
+import { getApplicationJobId } from "../utils/applications";
 
 // Recruiter postings use the same shape as external jobs in the list and details view.
 const toDirectJob = (posting) => ({
@@ -38,6 +41,8 @@ function JobSearch() {
   // Navigate between pages
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
+  // Applied job ids -> status, so Apply buttons become "Already applied"
+  const appliedJobs = useAppliedJobs();
 
   // Fetch available jobs from the backend
   const fetchJobs = async () => {
@@ -204,31 +209,35 @@ function JobSearch() {
           {detailJob.deadline && <p><strong>Deadline:</strong> {parseApiDate(detailJob.deadline)?.toLocaleString()}</p>}
 
           <div className="job-detail-actions">
-            {/* Navigate to internal Job Application page */}
-            <button
-              type="button"
-              className="apply-button"
-              onClick={() =>
-                navigate("/apply", {
-                  state: {
-                    job: {
-                      id: detailJob.direct ? detailJob.id : String(detailJob.guid),
-                      title: detailJob.title,
-                      company: detailJob.companyName,
-                      location: formatLocation(detailJob),
-                      type:
-                        detailJob.employmentType ||
-                        "Not specified",
-                      description:
-                        detailJob.excerpt ||
-                        "No description available.",
+            {/* Navigate to internal Job Application page, unless already applied */}
+            {appliedJobs.has(getApplicationJobId(detailJob)) ? (
+              <AlreadyApplied status={appliedJobs.get(getApplicationJobId(detailJob))} />
+            ) : (
+              <button
+                type="button"
+                className="apply-button"
+                onClick={() =>
+                  navigate("/apply", {
+                    state: {
+                      job: {
+                        id: getApplicationJobId(detailJob),
+                        title: detailJob.title,
+                        company: detailJob.companyName,
+                        location: formatLocation(detailJob),
+                        type:
+                          detailJob.employmentType ||
+                          "Not specified",
+                        description:
+                          detailJob.excerpt ||
+                          "No description available.",
+                      },
                     },
-                  },
-                })
-              }
-            >
-              Apply for this job
-            </button>
+                  })
+                }
+              >
+                Apply for this job
+              </button>
+            )}
             {renderShareButton(detailJob)}
           </div>
 
@@ -252,7 +261,7 @@ function JobSearch() {
         </div>
 
         {/* US-16: AI match scores for active CareerConnect postings */}
-        <AiJobMatches />
+        <AiJobMatches appliedJobs={appliedJobs} />
 
         {/* Job search form */}
         <form
