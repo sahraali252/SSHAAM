@@ -60,14 +60,16 @@ export default function AiJobMatches() {
             Contact details are removed before anything is sent to the AI.
           </p>
         </div>
-        <button
-          className="ai-matches-button"
-          type="button"
-          onClick={findMatches}
-          disabled={loading}
-        >
-          {loading ? "Finding matches..." : matches ? "Refresh matches" : "Find my matches"}
-        </button>
+        {!matches && (
+          <button
+            className="ai-matches-button"
+            type="button"
+            onClick={findMatches}
+            disabled={loading}
+          >
+            {loading ? "Finding matches..." : "Find my matches"}
+          </button>
+        )}
       </div>
 
       {loading && (
