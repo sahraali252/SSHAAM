@@ -136,7 +136,7 @@ CareerConnect provides a centralized platform where job seekers can organize and
    cp .env.example .env
    ```
 
-   Ask the team for the required `DATABASE_URL`, `SUPABASE_URL`, and `SUPABASE_KEY` values, then add them to `.env`. For the AI features, add your own free Google Gemini API key (https://aistudio.google.com/apikey) as `GEMINI_API_KEY`; `GEMINI_MODEL` is optional and defaults to `gemini-2.5-flash`. Never upload the `.env` file to GitHub.
+   Ask the team for the required `DATABASE_URL`, `SUPABASE_URL`, and `SUPABASE_KEY` values, then add them to `.env`. For the AI features, add your own free Google Gemini API key (https://aistudio.google.com/apikey) as `GEMINI_API_KEY`; `GEMINI_MODEL` is optional and defaults to `gemini-3.5-flash-lite` (fast and available on the free tier). Never upload the `.env` file to GitHub.
 
 6. Start the backend server:
 
