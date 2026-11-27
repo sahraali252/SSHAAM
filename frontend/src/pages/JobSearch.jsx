@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./JobSearch.css";
 import { parseApiDate } from "../utils/dates";
+import AiJobMatches from "../components/AiJobMatches";
 
 function JobSearch() {
   // Store job search results
@@ -212,6 +213,9 @@ function JobSearch() {
             Direct connections. More possibilities. Find your next role in one place.
           </p>
         </div>
+
+        {/* US-16: AI match scores for active CareerConnect postings */}
+        <AiJobMatches />
 
         {/* Job search form */}
         <form

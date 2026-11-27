@@ -1,0 +1,199 @@
+/* AI Job Matches (US-16). Colors come from the shared theme in index.css;
+   .ai-matches-button and the Apply button get the navy pill style from the shared rule. */
+.ai-matches {
+  margin-bottom: 24px;
+  padding: 24px;
+  border: 1px solid var(--cc-line);
+  border-radius: 24px;
+  background: #ffffff;
+  box-shadow: var(--cc-shadow);
+}
+
+.ai-matches-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.ai-matches-header .eyebrow {
+  margin: 0 0 8px;
+  color: var(--cc-blue);
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.11em;
+}
+
+.ai-matches-header h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.ai-matches-header p {
+  margin: 6px 0 0;
+  color: var(--cc-muted);
+  font-size: 14px;
+}
+
+.ai-matches-button {
+  flex: 0 0 auto;
+}
+
+.ai-matches-status,
+.ai-matches-summary {
+  margin: 18px 0 0;
+  color: var(--cc-muted);
+  font-size: 14px;
+}
+
+.ai-matches-error {
+  margin: 18px 0 0;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: #fff1f2;
+  color: #9f2434;
+  font-weight: 600;
+}
+
+.ai-match-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ai-match-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+  padding: 22px;
+  border: 1px solid var(--cc-line);
+  border-radius: 20px;
+  background: var(--cc-bg);
+  overflow-wrap: anywhere;
+}
+
+.ai-match-score {
+  display: inline-block;
+  margin-bottom: 14px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.ai-match-score-high {
+  background: var(--cc-lemon);
+  color: var(--cc-ink);
+}
+
+.ai-match-score-medium {
+  background: var(--cc-glacier);
+  color: var(--cc-ink);
+}
+
+.ai-match-score-low {
+  background: #eef1f4;
+  color: #45566a;
+}
+
+.ai-match-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.ai-match-body h3 {
+  margin: 0 0 4px;
+  font-size: 20px;
+  font-weight: 650;
+}
+
+.ai-match-company {
+  margin: 0 0 10px;
+  color: var(--cc-ink);
+  font-weight: 600;
+}
+
+.ai-match-reason {
+  margin: 0 0 12px;
+  color: var(--cc-muted);
+  line-height: 1.5;
+}
+
+.ai-match-skills {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+  font-size: 13px;
+}
+
+.ai-match-skills strong {
+  margin-right: 2px;
+  color: var(--cc-ink);
+  font-weight: 600;
+}
+
+.ai-skill {
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.ai-skill-match {
+  background: var(--cc-glacier);
+  color: var(--cc-ink);
+}
+
+.ai-skill-missing {
+  border: 1px solid var(--cc-line);
+  background: #ffffff;
+  color: var(--cc-muted);
+}
+
+/* Score chip on the left, Apply button on the top right of each card */
+.ai-match-top {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  margin-bottom: 14px;
+}
+
+.ai-match-top .ai-match-score {
+  margin-bottom: 0;
+}
+
+.ai-match-top .ai-match-apply {
+  flex: 0 0 auto;
+  margin-top: 0;
+}
+
+.ai-matches-disclaimer {
+  margin: 16px 0 0;
+  color: var(--cc-muted);
+  font-size: 12px;
+}
+
+@media (max-width: 700px) {
+  .ai-matches-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .ai-match-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

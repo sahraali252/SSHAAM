@@ -18,7 +18,7 @@ from pydantic import BaseModel, ValidationError
 from pypdf import PdfReader
 from supabase import create_client
 
-from app.schemas import ResumeFeedbackResponse
+from app.schemas import AIJobMatchList, JobMatch, ResumeFeedbackResponse
 
 load_dotenv()
 
@@ -28,6 +28,9 @@ DEFAULT_GEMINI_MODEL = "gemini-3.5-flash-lite"
 GEMINI_TIMEOUT_MS = 20_000
 MAX_AI_TEXT_CHARS = 8000
 RESUME_BUCKET = "resumes"
+MAX_MATCHED_POSTINGS = 15
+MAX_POSTING_CHARS = 700
+MAX_RESUME_CHARS_FOR_MATCHING = 5000
 
 AI_UNAVAILABLE_MESSAGE = "AI service is unavailable, try again later."
 
@@ -87,6 +90,28 @@ Return:
 <resume>
 {resume_text}
 </resume>
+"""
+
+JOB_MATCHING_PROMPT = """You are a career advisor matching one job seeker to job postings.
+
+{rules}
+- Score only on how well the candidate's skills, experience and education fit each job's requirements. Do not consider company prestige or location preferences.
+- matching_skills must appear in the candidate text AND be relevant to the job. missing_skills must be required or preferred by the job but absent from the candidate text.
+
+Return one entry in "matches" for EVERY job below, each with:
+- job_ref: the job's reference exactly as given (for example J1).
+- match_score: an integer from 0 to 100 (0 = no fit, 100 = excellent fit).
+- matching_skills: a short list of skills.
+- missing_skills: a short list of skills.
+- reason: one sentence explaining the score.
+
+<candidate>
+{candidate_text}
+</candidate>
+
+<jobs>
+{jobs_text}
+</jobs>
 """
 
 
@@ -202,3 +227,69 @@ def get_resume_feedback(resume_text: str) -> ResumeFeedbackResponse:
         resume_text=prepare_text(resume_text),
     )
     return ask_gemini(prompt, ResumeFeedbackResponse)
+
+
+def build_candidate_text(resume_text: str, profile=None) -> str:
+    """Combine the profile fields and resume into one redacted, truncated block."""
+    parts = []
+    if profile is not None:
+        for label, value in [
+            ("Headline", profile.headline),
+            ("Skills", profile.skills),
+            ("Experience", profile.experience),
+            ("Education", profile.education),
+        ]:
+            if value and value.strip():
+                parts.append(f"{label}: {prepare_text(value, 1000)}")
+    parts.append("Resume:\n" + prepare_text(resume_text, MAX_RESUME_CHARS_FOR_MATCHING))
+    return "\n".join(parts)
+
+
+def build_jobs_text(postings) -> str:
+    blocks = []
+    for index, posting in enumerate(postings, start=1):
+        blocks.append(
+            f"[J{index}]\n"
+            f"Title: {posting.title}\n"
+            f"Company: {posting.company_name}\n"
+            f"Employment type: {posting.employment_type}\n"
+            f"Description: {prepare_text(posting.description, MAX_POSTING_CHARS)}"
+        )
+    return "\n\n".join(blocks)
+
+
+def get_job_matches(resume_text: str, profile, postings) -> list[JobMatch]:
+    """US-16: score up to MAX_MATCHED_POSTINGS postings in ONE Gemini call, best first."""
+    postings = list(postings)[:MAX_MATCHED_POSTINGS]
+    if not postings:
+        return []
+
+    prompt = JOB_MATCHING_PROMPT.format(
+        rules=SHARED_RULES,
+        candidate_text=build_candidate_text(resume_text, profile),
+        jobs_text=build_jobs_text(postings),
+    )
+    result = ask_gemini(prompt, AIJobMatchList)
+
+    # Map the short references back to real postings; drop invented or duplicate refs.
+    postings_by_ref = {f"J{index}": posting for index, posting in enumerate(postings, start=1)}
+    matches = {}
+    for item in result.matches:
+        ref = item.job_ref.strip().strip("[]").upper()
+        posting = postings_by_ref.get(ref)
+        if posting is None or ref in matches:
+            continue
+        matches[ref] = JobMatch(
+            posting_id=posting.id,
+            title=posting.title,
+            company_name=posting.company_name,
+            location=posting.location,
+            employment_type=posting.employment_type,
+            description=posting.description,
+            match_score=item.match_score,
+            matching_skills=item.matching_skills,
+            missing_skills=item.missing_skills,
+            reason=item.reason,
+        )
+
+    return sorted(matches.values(), key=lambda match: match.match_score, reverse=True)
