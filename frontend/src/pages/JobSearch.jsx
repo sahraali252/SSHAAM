@@ -4,6 +4,7 @@ import "./JobSearch.css";
 import { parseApiDate } from "../utils/dates";
 import { getExternalJobUrl } from "../utils/shareJob";
 import ShareJobButton from "../components/ShareJobButton";
+import AiJobMatches from "../components/AiJobMatches";
 
 // Recruiter postings use the same shape as external jobs in the list and details view.
 const toDirectJob = (posting) => ({
@@ -249,6 +250,9 @@ function JobSearch() {
             Direct connections. More possibilities. Find your next role in one place.
           </p>
         </div>
+
+        {/* US-16: AI match scores for active CareerConnect postings */}
+        <AiJobMatches />
 
         {/* Job search form */}
         <form

@@ -1,33 +1,3 @@
-# CareerConnect
-
-## Project Description
-
-CareerConnect is a web-based platform designed to help job seekers manage their job search activities in one centralized location. The platform allows users to create profiles, manage resumes, search for job opportunities, submit applications, and track the progress of their applications.
-
-## Identified Problem
-
-Job seekers often use multiple platforms and tools to manage resumes, job applications, deadlines, and application statuses. This can make the job search process difficult to organize and track.
-
-## Proposed Solution
-
-CareerConnect provides a centralized platform where job seekers can organize and manage their job search activities. Users can manage their profiles and resumes, search for job opportunities, submit applications, and monitor the status of their applications.
-
-## Team Members
-
-| Name | Student ID |
-|------|------------|
-| Sara Noori | 40224277 |
-| Sahra Ali | 40328476 |
-| Hiba Tydrini | 40348854 |
-| Aya Lakhoitri | 40330319 |
-| Amine Ait Yakoub | 40315369 |
-| Melissa Luk | 40089387 |
-
-## Technologies
-
-### Frontend
-- React
-- JavaScript
 - HTML
 - CSS
 
@@ -80,6 +50,7 @@ CareerConnect provides a centralized platform where job seekers can organize and
 - **US-13 — Save Favorite Jobs:** As a job seeker, I want to save jobs as favourites so that I can easily return to opportunities I am interested in.
 - **US-14 — Create Job Posting:** As a recruiter, I want to create a job posting so that I can advertise an available position to job seekers.
 - **US-15 — AI-Assisted Resume Feedback:** As a job seeker, I want to receive AI-assisted feedback on my resume so that I can identify areas for improvement.
+- **US-16 — AI Job Matching and Scoring:** As a job seeker, I want the AI to score how well my resume and profile match the active job postings on CareerConnect so that I can focus on the opportunities that fit me best.
 - **US-17 — Share Job Posting:** As a job seeker or recruiter, I want to share a CareerConnect job posting by link, email or LinkedIn so that other people can discover and apply to the opportunity.
 
 ## Local Setup
@@ -108,49 +79,3 @@ CareerConnect provides a centralized platform where job seekers can organize and
 3. Activate the virtual environment:
 
    **Mac/Linux:**
-
-   ```bash
-   source venv/bin/activate
-   ```
-
-   **Windows PowerShell:**
-
-   ```powershell
-   venv\Scripts\Activate.ps1
-   ```
-
-   **Windows Command Prompt:**
-
-   ```bat
-   venv\Scripts\activate.bat
-   ```
-   
-4. Install the required backend packages:
-
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-5. Create your local environment file:
-
-   ```bash
-   cp .env.example .env
-   ```
-
-   Ask the team for the required `DATABASE_URL`, `SUPABASE_URL`, and `SUPABASE_KEY` values, then add them to `.env`. Never upload the `.env` file to GitHub.
-
-6. Start the backend server:
-
-   ```bash
-   uvicorn app.main:app --reload
-   ```
-
-7. Open the API documentation in your browser:
-
-## GitHub Repository
-
-https://github.com/sahraali252/SSHAAM
-
-   ```text
-   http://127.0.0.1:8000/docs
-   ```
