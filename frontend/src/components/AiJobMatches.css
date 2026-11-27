@@ -1,10 +1,12 @@
-/* AI Job Matches (US-16) — follows the Browse Jobs page styles */
+/* AI Job Matches (US-16). Colors come from the shared theme in index.css;
+   .ai-matches-button and the Apply button get the navy pill style from the shared rule. */
 .ai-matches {
   margin-bottom: 24px;
-  padding: 22px;
+  padding: 24px;
+  border: 1px solid var(--cc-line);
+  border-radius: 24px;
   background: #ffffff;
-  border: 1px solid #e5e5e5;
-  border-radius: 12px;
+  box-shadow: var(--cc-shadow);
 }
 
 .ai-matches-header {
@@ -15,130 +17,114 @@
 }
 
 .ai-matches-header .eyebrow {
-  margin: 0 0 6px;
-  color: #737373;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  margin: 0 0 8px;
+  color: var(--cc-blue);
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.11em;
 }
 
 .ai-matches-header h2 {
   margin: 0;
-  font-size: 22px;
-  font-weight: 650;
-  letter-spacing: -0.02em;
+  font-size: 24px;
+  font-weight: 700;
 }
 
 .ai-matches-header p {
   margin: 6px 0 0;
-  color: #737373;
+  color: var(--cc-muted);
   font-size: 14px;
 }
 
 .ai-matches-button {
   flex: 0 0 auto;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 8px;
-  background: #111111;
-  color: #ffffff;
-  cursor: pointer;
-  font-weight: 600;
 }
 
-.ai-matches-button:hover {
-  background: #333333;
-}
-
-.ai-matches-button:disabled {
-  cursor: not-allowed;
-  opacity: 0.65;
-}
-
-.ai-matches-status {
-  margin: 16px 0 0;
-  color: #737373;
+.ai-matches-status,
+.ai-matches-summary {
+  margin: 18px 0 0;
+  color: var(--cc-muted);
   font-size: 14px;
 }
 
 .ai-matches-error {
-  margin: 16px 0 0;
-  padding: 12px;
-  border: 1px solid #fecaca;
-  border-radius: 8px;
-  background: #fef2f2;
-  color: #b91c1c;
+  margin: 18px 0 0;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: #fff1f2;
+  color: #9f2434;
   font-weight: 600;
 }
 
 .ai-match-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin: 18px 0 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin: 14px 0 0;
   padding: 0;
   list-style: none;
 }
 
 .ai-match-card {
   display: flex;
-  gap: 18px;
-  padding: 18px;
-  border: 1px solid #e5e5e5;
-  border-radius: 12px;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+  padding: 22px;
+  border: 1px solid var(--cc-line);
+  border-radius: 20px;
+  background: var(--cc-bg);
+  overflow-wrap: anywhere;
 }
 
 .ai-match-score {
-  flex: 0 0 84px;
-  height: fit-content;
-  padding: 12px 6px;
-  border-radius: 10px;
-  text-align: center;
-  font-size: 26px;
-  font-weight: 750;
-}
-
-.ai-match-score span {
-  display: block;
-  font-size: 11px;
-  font-weight: 600;
+  display: inline-block;
+  margin-bottom: 14px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
 }
 
 .ai-match-score-high {
-  background: #f0fdf4;
-  color: #166534;
+  background: var(--cc-lemon);
+  color: var(--cc-ink);
 }
 
 .ai-match-score-medium {
-  background: #fffbeb;
-  color: #b45309;
+  background: var(--cc-glacier);
+  color: var(--cc-ink);
 }
 
 .ai-match-score-low {
-  background: #f5f5f5;
-  color: #525252;
+  background: #eef1f4;
+  color: #45566a;
 }
 
 .ai-match-body {
-  min-width: 0;
+  display: flex;
   flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
 }
 
 .ai-match-body h3 {
   margin: 0 0 4px;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 650;
 }
 
 .ai-match-company {
-  margin: 0 0 8px;
-  color: #404040;
+  margin: 0 0 10px;
+  color: var(--cc-ink);
   font-weight: 600;
 }
 
 .ai-match-reason {
-  margin: 0 0 10px;
-  color: #525252;
+  margin: 0 0 12px;
+  color: var(--cc-muted);
   line-height: 1.5;
 }
 
@@ -147,42 +133,56 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 6px;
-  margin-top: 6px;
+  margin-bottom: 8px;
   font-size: 13px;
 }
 
 .ai-match-skills strong {
   margin-right: 2px;
-  color: #404040;
+  color: var(--cc-ink);
+  font-weight: 600;
 }
 
 .ai-skill {
-  padding: 3px 9px;
+  padding: 3px 10px;
   border-radius: 999px;
   font-size: 12px;
   font-weight: 600;
 }
 
 .ai-skill-match {
-  background: #f0fdf4;
-  color: #166534;
+  background: var(--cc-glacier);
+  color: var(--cc-ink);
 }
 
 .ai-skill-missing {
-  background: #f5f5f5;
-  color: #525252;
+  border: 1px solid var(--cc-line);
+  background: #ffffff;
+  color: var(--cc-muted);
+}
+
+/* Keeps Apply aligned at the bottom of every card in the grid */
+.ai-match-body .job-details-button {
+  margin-top: auto;
+}
+
+.ai-match-body > :nth-last-child(2) {
+  margin-bottom: 16px;
 }
 
 .ai-matches-disclaimer {
-  margin: 14px 0 0;
-  color: #a3a3a3;
+  margin: 16px 0 0;
+  color: var(--cc-muted);
   font-size: 12px;
 }
 
-@media (max-width: 600px) {
-  .ai-matches-header,
-  .ai-match-card {
+@media (max-width: 700px) {
+  .ai-matches-header {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .ai-match-list {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
