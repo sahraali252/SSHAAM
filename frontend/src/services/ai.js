@@ -32,3 +32,7 @@ async function post(path, signal) {
 export function getResumeFeedback(signal) {
   return post("/ai/resume-feedback", signal);
 }
+
+export function getJobMatches(signal) {
+  return post("/ai/job-matches", signal);
+}
