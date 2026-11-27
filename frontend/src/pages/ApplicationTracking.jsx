@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { summarizeApplications } from "../utils/applicationAnalytics";
 import "./Application.css";
+import MockInterview from "../components/MockInterview";
 
 function ApplicationTracking() {
   // Applications retrieved from the backend
@@ -10,6 +11,9 @@ function ApplicationTracking() {
   // Loading and error states
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  // US-18: the application being practiced in the mock interview, if any
+  const [practice, setPractice] = useState(null);
   const analytics = summarizeApplications(applications);
 
   // Get locally saved job details for display
@@ -137,8 +141,15 @@ function ApplicationTracking() {
         <h1>CareerConnect</h1>
         <h2>My Job Applications</h2>
 
-        {/* Loading state */}
-        {loading ? (
+        {/* Mock interview for one application (US-18) */}
+        {practice ? (
+          <MockInterview
+            application={practice.application}
+            job={practice.job}
+            onClose={() => setPractice(null)}
+          />
+
+        ) : loading ? (
           <p>Loading applications...</p>
 
         ) : error ? (
@@ -257,6 +268,15 @@ function ApplicationTracking() {
                       {application.status}
                     </span>
                   </p>
+
+                  {/* US-18: AI mock interview for this job */}
+                  <button
+                    className="primary-button practice-interview-button"
+                    type="button"
+                    onClick={() => setPractice({ application, job })}
+                  >
+                    Practice interview
+                  </button>
 
                 </div>
               );

@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import "./Application.css";
+import AlreadyApplied from "../components/AlreadyApplied";
+import { normalizeJobId } from "../utils/applications";
 
 function JobApplication() {
   // Get the selected job from Job Search
   const location = useLocation();
   const job = location.state?.job;
+  // Same id format as every Apply entry point and the backend duplicate check
+  const jobId = job?.id ? normalizeJobId(job.id) : "";
 
   // Application states
   const [applicationStatus, setApplicationStatus] = useState("");
@@ -16,7 +20,7 @@ function JobApplication() {
 
   // Save job details for display in Application Tracking
   const saveJobDetails = () => {
-    if (!job?.id) return;
+    if (!jobId) return;
 
     try {
       const saved = JSON.parse(
@@ -28,10 +32,12 @@ function JobApplication() {
           ? saved
           : {};
 
-      jobDetails[String(job.id)] = {
+      jobDetails[jobId] = {
         title: job.title,
         company: job.company,
         location: job.location,
+        // Used by the AI mock interview for external jobs (US-18)
+        description: (job.description || "").slice(0, 4000),
       };
 
       localStorage.setItem(
@@ -45,7 +51,7 @@ function JobApplication() {
 
   // Check if the user has already applied for this job
   useEffect(() => {
-    if (!job?.id) {
+    if (!jobId) {
       setIsChecking(false);
       return;
     }
@@ -93,7 +99,7 @@ function JobApplication() {
 
         const existing = applications.find(
           (application) =>
-            application.job_id === String(job.id)
+            normalizeJobId(application.job_id) === jobId
         );
 
         if (existing) {
@@ -117,11 +123,11 @@ function JobApplication() {
     checkExistingApplication();
 
     return () => controller.abort();
-  }, [job?.id]);
+  }, [jobId]);
 
   // Submit application to the backend
   const handleApply = async () => {
-    if (!job?.id || isSubmitted || isSubmitting || isChecking) {
+    if (!jobId || isSubmitted || isSubmitting || isChecking) {
       return;
     }
 
@@ -145,7 +151,7 @@ function JobApplication() {
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
-            job_id: String(job.id),
+            job_id: jobId,
           }),
         }
       );
@@ -165,15 +171,18 @@ function JobApplication() {
         // Display confirmation message
         setMessage("Application submitted successfully!");
       } else {
-        // Handle duplicate applications
+        // Handle duplicate applications (409: two submissions at the same moment)
         if (
-          response.status === 400 &&
-          data.detail === "You already applied to this job"
+          response.status === 409 ||
+          (response.status === 400 &&
+            data.detail === "You already applied to this job")
         ) {
           saveJobDetails();
 
           setIsSubmitted(true);
-          setApplicationStatus("Applied");
+          setApplicationStatus((current) => current || "Applied");
+          setMessage("You already applied to this job.");
+          return;
         }
 
         if (response.status === 401) {
@@ -207,7 +216,7 @@ function JobApplication() {
         <h1>CareerConnect</h1>
         <h2>Job Application</h2>
 
-        {!job?.id ? (
+        {!jobId ? (
           <>
             <p>
               Please select a job from Job Search before applying.
@@ -242,37 +251,27 @@ function JobApplication() {
               </p>
             </div>
 
-            {/* Application submission button */}
-            <button
-              className="apply-button"
-              onClick={handleApply}
-              disabled={
-                isSubmitted ||
-                isSubmitting ||
-                isChecking
-              }
-            >
-              {isChecking
-                ? "Checking..."
-                : isSubmitting
-                ? "Submitting..."
-                : isSubmitted
-                ? "Already Applied"
-                : "Apply Now"}
-            </button>
+            {/* Apply button, or "Already applied" with the status */}
+            {isSubmitted ? (
+              <AlreadyApplied status={applicationStatus} />
+            ) : (
+              <button
+                className="apply-button"
+                onClick={handleApply}
+                disabled={isSubmitting || isChecking}
+              >
+                {isChecking
+                  ? "Checking..."
+                  : isSubmitting
+                  ? "Submitting..."
+                  : "Apply Now"}
+              </button>
+            )}
 
             {/* Success or error message */}
             {message && (
               <p className="application-message">
                 {message}
-              </p>
-            )}
-
-            {/* Current application status */}
-            {applicationStatus && (
-              <p className="application-status">
-                <strong>Status:</strong>{" "}
-                {applicationStatus}
               </p>
             )}
 

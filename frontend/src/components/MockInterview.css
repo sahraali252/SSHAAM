@@ -1,0 +1,149 @@
+/* AI Mock Interview (US-18). Buttons use the shared .primary-button /
+   .secondary-button pill styles from index.css; colors from the theme variables. */
+.mock-interview {
+  padding: 32px;
+  border: 1px solid var(--cc-line);
+  border-radius: 24px;
+  background: #ffffff;
+  box-shadow: var(--cc-shadow);
+}
+
+.mock-interview-back {
+  margin-bottom: 20px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.mock-interview-eyebrow {
+  margin: 0 0 8px;
+  color: var(--cc-blue);
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.11em;
+}
+
+.mock-interview h2 {
+  margin: 0;
+  font-size: 26px;
+  text-align: left;
+}
+
+.mock-interview-company {
+  margin: 6px 0 0;
+  color: var(--cc-muted);
+  font-weight: 600;
+}
+
+.mock-interview-status {
+  margin: 24px 0 0;
+  color: var(--cc-muted);
+}
+
+.mock-interview-error {
+  margin-top: 24px;
+  padding: 16px;
+  border-radius: 12px;
+  background: #fff1f2;
+  color: #9f2434;
+  font-weight: 600;
+}
+
+.mock-interview-error p {
+  margin: 0 0 12px;
+}
+
+.mock-interview-intro {
+  margin: 20px 0 0;
+  color: var(--cc-muted);
+  font-size: 14px;
+}
+
+.mock-interview-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mock-interview-item {
+  padding: 18px 20px;
+  border: 1px solid var(--cc-line);
+  border-radius: 16px;
+  background: var(--cc-bg);
+}
+
+.mock-interview-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mock-interview-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: var(--cc-blue);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.mock-interview-type {
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.mock-interview-type-technical {
+  background: var(--cc-glacier);
+  color: var(--cc-ink);
+}
+
+.mock-interview-type-role-specific {
+  background: var(--cc-lemon);
+  color: var(--cc-ink);
+}
+
+.mock-interview-question {
+  margin: 12px 0 0;
+  color: var(--cc-ink);
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.mock-interview-tip-toggle {
+  margin-top: 12px;
+  cursor: pointer;
+}
+
+.mock-interview-tip {
+  margin: 12px 0 0;
+  padding: 12px 16px;
+  border-left: 3px solid var(--cc-blue);
+  border-radius: 12px;
+  background: #ffffff;
+  color: var(--cc-ink);
+  line-height: 1.5;
+}
+
+/* "Practice interview" button on each application card */
+.practice-interview-button {
+  margin-top: 8px;
+}
+
+@media (max-width: 600px) {
+  .mock-interview {
+    padding: 22px;
+  }
+}

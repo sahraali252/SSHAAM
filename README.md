@@ -80,6 +80,9 @@ CareerConnect provides a centralized platform where job seekers can organize and
 - **US-13 — Save Favorite Jobs:** As a job seeker, I want to save jobs as favourites so that I can easily return to opportunities I am interested in.
 - **US-14 — Create Job Posting:** As a recruiter, I want to create a job posting so that I can advertise an available position to job seekers.
 - **US-15 — AI-Assisted Resume Feedback:** As a job seeker, I want to receive AI-assisted feedback on my resume so that I can identify areas for improvement.
+- **US-16 — AI Job Matching and Scoring:** As a job seeker, I want the AI to score how well my resume and profile match the active job postings on CareerConnect so that I can focus on the opportunities that fit me best.
+- **US-17 — Share Job Posting:** As a job seeker or recruiter, I want to share a CareerConnect job posting by link, email or LinkedIn so that other people can discover and apply to the opportunity.
+- **US-18 — AI Mock Interview Practice:** As a job seeker, I want to practice a mock interview with AI-generated questions for a job I applied to so that I can prepare for the technical and role-specific questions I am likely to be asked.
 
 ## Local Setup
 
@@ -136,7 +139,7 @@ CareerConnect provides a centralized platform where job seekers can organize and
    cp .env.example .env
    ```
 
-   Ask the team for the required `DATABASE_URL`, `SUPABASE_URL`, and `SUPABASE_KEY` values, then add them to `.env`. Never upload the `.env` file to GitHub.
+   Ask the team for the required `DATABASE_URL`, `SUPABASE_URL`, and `SUPABASE_KEY` values, then add them to `.env`. For the AI features, add your own free Google Gemini API key (https://aistudio.google.com/apikey) as `GEMINI_API_KEY`; `GEMINI_MODEL` is optional and defaults to `gemini-3.5-flash-lite` (fast and available on the free tier). Never upload the `.env` file to GitHub.
 
 6. Start the backend server:
 

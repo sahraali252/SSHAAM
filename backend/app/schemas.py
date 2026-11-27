@@ -1,3 +1,4 @@
+import re
 from datetime import datetime, timezone
 from typing import Literal
 from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_validator
@@ -108,8 +109,33 @@ class ResumeResponse(BaseModel):
 
 
 # validates job application requests and responses
+HIMALAYAS_JOB_URL = re.compile(r"^https?://([^/?#]*\.)?himalayas\.app([/?#]|$)", re.IGNORECASE)
+
+
+def normalize_job_id(job_id: str) -> str:
+    """One id per job so the duplicate check cannot be bypassed.
+
+    Recruiter postings use their UUID. Himalayas jobs use their public job page
+    URL without query string, fragment or trailing slash, so links such as
+    applicationLink (?utm_source=api) map to the same id as guid.
+    Mirrors normalizeJobId() in frontend/src/utils/applications.js.
+    """
+    value = job_id.strip()
+    if HIMALAYAS_JOB_URL.match(value):
+        value = re.split(r"[?#]", value, maxsplit=1)[0].rstrip("/")
+    return value
+
+
 class JobApplicationCreate(BaseModel):
-    job_id: str
+    job_id: str = Field(min_length=1)
+
+    @field_validator("job_id")
+    @classmethod
+    def normalize(cls, value):
+        value = normalize_job_id(value)
+        if not value:
+            raise ValueError("job_id must not be empty")
+        return value
 
 
 class JobApplicationResponse(BaseModel):
@@ -145,3 +171,89 @@ class UnreadNotificationCount(BaseModel):
 
 class InterviewInvitationCreate(BaseModel):
     message: str = Field(default="You have been invited to an interview.", min_length=1, max_length=2000)
+
+
+# AI resume feedback (US-15). Also used as the Gemini response schema.
+class ResumeImprovement(BaseModel):
+    section: str
+    issue: str
+    suggestion: str
+
+
+class ResumeFeedbackResponse(BaseModel):
+    overall_score: int
+    summary: str
+    strengths: list[str]
+    improvements: list[ResumeImprovement]
+    missing_sections: list[str]
+
+    @field_validator("overall_score")
+    @classmethod
+    def clamp_score(cls, value):
+        return max(0, min(100, value))
+
+
+# AI job matching (US-16). AIJobMatchList is the Gemini response schema.
+class AIJobMatch(BaseModel):
+    job_ref: str
+    match_score: int
+    matching_skills: list[str]
+    missing_skills: list[str]
+    reason: str
+
+    @field_validator("match_score")
+    @classmethod
+    def clamp_score(cls, value):
+        return max(0, min(100, value))
+
+
+class AIJobMatchList(BaseModel):
+    matches: list[AIJobMatch]
+
+
+class JobMatch(BaseModel):
+    posting_id: str
+    title: str
+    company_name: str
+    location: str
+    employment_type: str
+    description: str
+    match_score: int
+    matching_skills: list[str]
+    missing_skills: list[str]
+    reason: str
+
+
+class JobMatchesResponse(BaseModel):
+    matches: list[JobMatch]
+    message: str | None = None
+
+
+# AI mock interview (US-18)
+class MockInterviewRequest(BaseModel):
+    """Job details for external (Himalayas) jobs that are not in our database."""
+    title: str = Field(default="", max_length=300)
+    company: str = Field(default="", max_length=300)
+    description: str = Field(default="", max_length=20000)
+
+
+class AIMockInterviewQuestion(BaseModel):
+    question: str
+    type: Literal["technical", "role-specific"]
+    tip: str
+
+    @field_validator("type", mode="before")
+    @classmethod
+    def normalize_type(cls, value):
+        if isinstance(value, str):
+            return value.strip().lower().replace("_", "-").replace(" ", "-")
+        return value
+
+
+class AIMockInterview(BaseModel):
+    """Gemini response schema."""
+    questions: list[AIMockInterviewQuestion]
+
+
+class MockInterviewQuestion(AIMockInterviewQuestion):
+    number: int
