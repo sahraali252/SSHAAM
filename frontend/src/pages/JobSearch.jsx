@@ -1,8 +1,21 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import "./JobSearch.css";
 import { parseApiDate } from "../utils/dates";
 import AiJobMatches from "../components/AiJobMatches";
+import { getExternalJobUrl } from "../utils/shareJob";
+import ShareJobButton from "../components/ShareJobButton";
+
+// Recruiter postings use the same shape as external jobs in the list and details view.
+const toDirectJob = (posting) => ({
+  ...posting,
+  direct: true,
+  guid: posting.id,
+  companyName: posting.company_name,
+  employmentType: posting.employment_type,
+  locationRestrictions: [posting.location],
+  excerpt: posting.description,
+});
 
 function JobSearch() {
   // Store job search results
@@ -24,6 +37,7 @@ function JobSearch() {
 
   // Navigate between pages
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   // Fetch available jobs from the backend
   const fetchJobs = async () => {
@@ -92,16 +106,22 @@ function JobSearch() {
     `${posting.title} ${posting.company_name} ${posting.description}`.toLowerCase().includes(filters.keyword.trim().toLowerCase()) &&
     (posting.location || "").toLowerCase().includes(filters.location.trim().toLowerCase()) &&
     `${posting.employment_type} ${posting.title} ${posting.description}`.toLowerCase().includes(filters.category.trim().toLowerCase())
-  ).map(posting => ({
-    ...posting,
-    direct: true,
-    guid: posting.id,
-    companyName: posting.company_name,
-    employmentType: posting.employment_type,
-    locationRestrictions: [posting.location],
-    excerpt: posting.description,
-  }));
+  ).map(toDirectJob);
   const visibleJobs = [...jobs, ...directJobs];
+
+  // US-17: a shared link (/jobs?posting=<id>) opens that recruiter posting's details.
+  // It is looked up in the active postings already loaded; no extra API call.
+  const sharedPostingId = searchParams.get("posting");
+  const sharedPosting = sharedPostingId && !postingsLoading
+    ? postings.find((posting) => String(posting.id) === sharedPostingId)
+    : undefined;
+  const sharedJobMissing = Boolean(sharedPostingId) && !postingsLoading && !postingsError && !sharedPosting;
+  const detailJob = selectedJob || (sharedPosting ? toDirectJob(sharedPosting) : null);
+
+  const closeDetails = () => {
+    setSelectedJob(null);
+    if (sharedPostingId) setSearchParams({}, { replace: true });
+  };
 
   // Handle job search
   const handleSearch = (event) => {
@@ -124,8 +144,22 @@ function JobSearch() {
     return locations.join(", ");
   };
 
+  // US-17: recruiter postings share their /jobs?posting=<id> link; external
+  // Himalayas jobs share their own himalayas.app page, or no button without one.
+  const renderShareButton = (job) => {
+    if (job.direct) return <ShareJobButton posting={job} />;
+    const externalUrl = getExternalJobUrl(job);
+    if (!externalUrl) return null;
+    return (
+      <ShareJobButton
+        posting={{ id: job.guid, title: job.title, company_name: job.companyName, location: formatLocation(job) }}
+        url={externalUrl}
+      />
+    );
+  };
+
   // Display details of the selected job
-  if (selectedJob) {
+  if (detailJob) {
     return (
       <div className="job-search-page">
         <div className="job-details">
@@ -133,67 +167,70 @@ function JobSearch() {
           {/* Return to job search results */}
           <button
             className="back-button"
-            onClick={() => setSelectedJob(null)}
+            onClick={closeDetails}
           >
             ← Back to jobs
           </button>
 
-          <h1>{selectedJob.title}</h1>
+          <h1>{detailJob.title}</h1>
 
-          <h2>{selectedJob.companyName}</h2>
+          <h2>{detailJob.companyName}</h2>
 
           <p>
             <strong>Employment Type:</strong>{" "}
-            {selectedJob.employmentType || "Not specified"}
+            {detailJob.employmentType || "Not specified"}
           </p>
 
           <p>
             <strong>Location:</strong>{" "}
-            {formatLocation(selectedJob)}
+            {formatLocation(detailJob)}
           </p>
 
-          {selectedJob.categories?.length > 0 && (
+          {detailJob.categories?.length > 0 && (
             <p>
               <strong>Category:</strong>{" "}
-              {selectedJob.categories.slice(0, 3).join(", ")}
+              {detailJob.categories.slice(0, 3).join(", ")}
             </p>
           )}
 
           <hr />
 
           {/* Job description */}
-          {selectedJob.direct ? (
-            <div className="direct-job-description">{selectedJob.description}</div>
+          {detailJob.direct ? (
+            <div className="direct-job-description">{detailJob.description}</div>
           ) : (
-            <div dangerouslySetInnerHTML={{ __html: selectedJob.description }} />
+            <div dangerouslySetInnerHTML={{ __html: detailJob.description }} />
           )}
-          {selectedJob.deadline && <p><strong>Deadline:</strong> {parseApiDate(selectedJob.deadline)?.toLocaleString()}</p>}
+          {detailJob.deadline && <p><strong>Deadline:</strong> {parseApiDate(detailJob.deadline)?.toLocaleString()}</p>}
 
-          {/* Navigate to internal Job Application page */}
-          <button
-            type="button"
-            className="apply-button"
-            onClick={() =>
-              navigate("/apply", {
-                state: {
-                  job: {
-                    id: selectedJob.direct ? selectedJob.id : String(selectedJob.guid),
-                    title: selectedJob.title,
-                    company: selectedJob.companyName,
-                    location: formatLocation(selectedJob),
-                    type:
-                      selectedJob.employmentType ||
-                      "Not specified",
-                    description:
-                      selectedJob.excerpt ||
-                      "No description available.",
+          <div className="job-detail-actions">
+            {/* Navigate to internal Job Application page */}
+            <button
+              type="button"
+              className="apply-button"
+              onClick={() =>
+                navigate("/apply", {
+                  state: {
+                    job: {
+                      id: detailJob.direct ? detailJob.id : String(detailJob.guid),
+                      title: detailJob.title,
+                      company: detailJob.companyName,
+                      location: formatLocation(detailJob),
+                      type:
+                        detailJob.employmentType ||
+                        "Not specified",
+                      description:
+                        detailJob.excerpt ||
+                        "No description available.",
+                    },
                   },
-                },
-              })
-            }
-          >
-            Apply for this job
-          </button>
+                })
+              }
+            >
+              Apply for this job
+            </button>
+            {renderShareButton(detailJob)}
+          </div>
 
         </div>
       </div>
@@ -259,6 +296,7 @@ function JobSearch() {
         {postingsLoading && <p role="status">Loading direct postings...</p>}
         {jobsError && <p role="alert">{jobsError}</p>}
         {postingsError && <p role="alert">{postingsError}</p>}
+        {sharedJobMissing && <p className="shared-job-missing" role="alert">This job is no longer available.</p>}
 
         {/* Number of search results */}
         {!loading && !postingsLoading && (
@@ -293,12 +331,15 @@ function JobSearch() {
                     "No description available."}
                 </p>
 
-                <button
-                  className="job-details-button"
-                  onClick={() => setSelectedJob(job)}
-                >
-                  View Details
-                </button>
+                <div className="job-card-actions">
+                  <button
+                    className="job-details-button"
+                    onClick={() => setSelectedJob(job)}
+                  >
+                    View Details
+                  </button>
+                  {renderShareButton(job)}
+                </div>
               </div>
             ))}
         </div>

@@ -1,5 +1,6 @@
 import { deadlineInputValue, parseApiDate } from "../utils/dates";
 import NotificationCenter from "../components/NotificationCenter";
+import ShareJobButton from "../components/ShareJobButton";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./RecruiterDashboard.css";
@@ -468,6 +469,11 @@ function RecruiterDashboard() {
                       ? "Archive"
                       : "Restore"}
                   </button>
+
+                  {/* US-17: archived postings cannot be shared */}
+                  {posting.status === "active" && (
+                    <ShareJobButton posting={posting} />
+                  )}
                 </div>
               </article>
             ))}
