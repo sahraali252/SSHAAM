@@ -54,6 +54,17 @@ def submit_application(
         db.commit()
     except IntegrityError:
         db.rollback()
+        # Two submissions at the same moment: the unique constraint stops the
+        # second one, which is the same situation as an existing application.
+        already_applied = db.query(JobApplication).filter(
+            JobApplication.user_id == user.id,
+            JobApplication.job_id == application.job_id
+        ).first()
+        if already_applied:
+            raise HTTPException(
+                status_code=400,
+                detail="You already applied to this job"
+            )
         raise HTTPException(
             status_code=409,
             detail="Application could not be saved due to a database conflict"

@@ -1,3 +1,4 @@
+import re
 from datetime import datetime, timezone
 from typing import Literal
 from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_validator
@@ -108,8 +109,33 @@ class ResumeResponse(BaseModel):
 
 
 # validates job application requests and responses
+HIMALAYAS_JOB_URL = re.compile(r"^https?://([^/?#]*\.)?himalayas\.app([/?#]|$)", re.IGNORECASE)
+
+
+def normalize_job_id(job_id: str) -> str:
+    """One id per job so the duplicate check cannot be bypassed.
+
+    Recruiter postings use their UUID. Himalayas jobs use their public job page
+    URL without query string, fragment or trailing slash, so links such as
+    applicationLink (?utm_source=api) map to the same id as guid.
+    Mirrors normalizeJobId() in frontend/src/utils/applications.js.
+    """
+    value = job_id.strip()
+    if HIMALAYAS_JOB_URL.match(value):
+        value = re.split(r"[?#]", value, maxsplit=1)[0].rstrip("/")
+    return value
+
+
 class JobApplicationCreate(BaseModel):
-    job_id: str
+    job_id: str = Field(min_length=1)
+
+    @field_validator("job_id")
+    @classmethod
+    def normalize(cls, value):
+        value = normalize_job_id(value)
+        if not value:
+            raise ValueError("job_id must not be empty")
+        return value
 
 
 class JobApplicationResponse(BaseModel):

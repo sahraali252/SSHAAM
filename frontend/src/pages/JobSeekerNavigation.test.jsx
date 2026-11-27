@@ -86,7 +86,7 @@ it("combines both sources and preserves the direct application identifier and de
   fireEvent.click(within(screen.getByRole("heading", { name: direct.title }).parentElement).getByRole("button", { name: "View Details" }));
   expect(screen.getByText(direct.description)).toBeTruthy();
   fireEvent.click(screen.getByRole("button", { name: "Apply for this job" }));
-  expect(JSON.parse(screen.getByTestId("application-state").textContent).job).toEqual({ id: 7, title: direct.title, company: direct.company_name, location: direct.location, type: direct.employment_type, description: direct.description });
+  expect(JSON.parse(screen.getByTestId("application-state").textContent).job).toEqual({ id: "7", title: direct.title, company: direct.company_name, location: direct.location, type: direct.employment_type, description: direct.description });
 });
 it("preserves external job details and application payload", async () => {
   mockFeeds(); jobs();
