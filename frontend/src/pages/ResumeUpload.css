@@ -203,3 +203,172 @@
     width: 100%;
   }
 }
+
+/* AI resume feedback (US-15) */
+.ai-feedback {
+  margin-top: 22px;
+  padding: 22px;
+  border: 1px solid #dfe5ef;
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+.ai-feedback-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.ai-feedback-header h2 {
+  margin: 0;
+  font-size: 17px;
+}
+
+.ai-feedback-header p {
+  margin: 6px 0 0;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.ai-feedback-button {
+  flex: 0 0 auto;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 7px;
+  background: #2563eb;
+  color: #ffffff;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.ai-feedback-button:hover {
+  background: #1d4ed8;
+}
+
+.ai-feedback-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.ai-status {
+  margin: 16px 0 0;
+  color: #64748b;
+}
+
+.ai-error {
+  margin: 16px 0 0;
+  padding: 12px;
+  border: 1px solid #fecaca;
+  border-radius: 7px;
+  background: #fef2f2;
+  color: #b91c1c;
+  font-weight: 700;
+}
+
+.ai-feedback-results {
+  display: grid;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.ai-score-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  border-radius: 10px;
+  background: #eff6ff;
+}
+
+.ai-score-card p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.ai-score {
+  flex: 0 0 auto;
+  font-size: 32px;
+  font-weight: 800;
+}
+
+.ai-score span {
+  color: #64748b;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.ai-score-high {
+  color: #166534;
+}
+
+.ai-score-medium {
+  color: #b45309;
+}
+
+.ai-score-low {
+  color: #b91c1c;
+}
+
+.ai-feedback-card {
+  padding: 16px;
+  border: 1px solid #dfe5ef;
+  border-radius: 10px;
+}
+
+.ai-feedback-card h3 {
+  margin: 0 0 10px;
+  font-size: 15px;
+}
+
+.ai-feedback-card ul {
+  margin: 0;
+  padding-left: 20px;
+  line-height: 1.6;
+}
+
+.ai-improvement {
+  padding: 12px 0;
+  border-top: 1px solid #eef2f7;
+}
+
+.ai-improvement:first-of-type {
+  padding-top: 0;
+  border-top: none;
+}
+
+.ai-improvement p {
+  margin: 6px 0 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.ai-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ai-section-tag {
+  display: inline-block;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.ai-disclaimer {
+  margin: 0;
+  color: #64748b;
+  font-size: 12px;
+}
+
+@media (max-width: 620px) {
+  .ai-feedback-header,
+  .ai-score-card {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
