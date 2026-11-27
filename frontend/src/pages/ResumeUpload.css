@@ -214,10 +214,7 @@
 }
 
 .ai-feedback-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
+  display: block;
 }
 
 .ai-feedback-header h2 {
@@ -231,14 +228,17 @@
   font-size: 14px;
 }
 
+/* Same look as the Replace resume button (.upload-button) */
 .ai-feedback-button {
-  flex: 0 0 auto;
-  padding: 10px 14px;
+  width: 100%;
+  margin-top: 16px;
+  padding: 12px;
   border: none;
   border-radius: 7px;
   background: #2563eb;
   color: #ffffff;
   cursor: pointer;
+  font-size: 15px;
   font-weight: 700;
 }
 
@@ -366,7 +366,6 @@
 }
 
 @media (max-width: 620px) {
-  .ai-feedback-header,
   .ai-score-card {
     align-items: flex-start;
     flex-direction: column;
