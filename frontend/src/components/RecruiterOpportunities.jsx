@@ -1,6 +1,7 @@
 import { parseApiDate } from "../utils/dates";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ShareJobButton from "./ShareJobButton";
 import "./RecruiterOpportunities.css";
 
 const API_URL = "http://127.0.0.1:8000";
@@ -117,12 +118,15 @@ function RecruiterOpportunities() {
               {posting.description}
             </p>
 
-            <button
-              className="opportunity-apply-button"
-              onClick={() => openApplication(posting)}
-            >
-              View and Apply
-            </button>
+            <div className="opportunity-actions">
+              <button
+                className="opportunity-apply-button"
+                onClick={() => openApplication(posting)}
+              >
+                View and Apply
+              </button>
+              <ShareJobButton posting={posting} />
+            </div>
           </article>
         ))}
       </div>

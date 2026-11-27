@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./JobSearch.css";
 import { parseApiDate } from "../utils/dates";
+import ShareJobButton from "../components/ShareJobButton";
 
 function JobSearch() {
   // Store job search results
@@ -168,31 +169,35 @@ function JobSearch() {
           )}
           {selectedJob.deadline && <p><strong>Deadline:</strong> {parseApiDate(selectedJob.deadline)?.toLocaleString()}</p>}
 
-          {/* Navigate to internal Job Application page */}
-          <button
-            type="button"
-            className="apply-button"
-            onClick={() =>
-              navigate("/apply", {
-                state: {
-                  job: {
-                    id: selectedJob.direct ? selectedJob.id : String(selectedJob.guid),
-                    title: selectedJob.title,
-                    company: selectedJob.companyName,
-                    location: formatLocation(selectedJob),
-                    type:
-                      selectedJob.employmentType ||
-                      "Not specified",
-                    description:
-                      selectedJob.excerpt ||
-                      "No description available.",
+          <div className="job-detail-actions">
+            {/* Navigate to internal Job Application page */}
+            <button
+              type="button"
+              className="apply-button"
+              onClick={() =>
+                navigate("/apply", {
+                  state: {
+                    job: {
+                      id: selectedJob.direct ? selectedJob.id : String(selectedJob.guid),
+                      title: selectedJob.title,
+                      company: selectedJob.companyName,
+                      location: formatLocation(selectedJob),
+                      type:
+                        selectedJob.employmentType ||
+                        "Not specified",
+                      description:
+                        selectedJob.excerpt ||
+                        "No description available.",
+                    },
                   },
-                },
-              })
-            }
-          >
-            Apply for this job
-          </button>
+                })
+              }
+            >
+              Apply for this job
+            </button>
+            {/* US-17: only CareerConnect recruiter postings can be shared */}
+            {selectedJob.direct && <ShareJobButton posting={selectedJob} />}
+          </div>
 
         </div>
       </div>
