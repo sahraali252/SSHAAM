@@ -145,3 +145,59 @@ class UnreadNotificationCount(BaseModel):
 
 class InterviewInvitationCreate(BaseModel):
     message: str = Field(default="You have been invited to an interview.", min_length=1, max_length=2000)
+
+
+# AI resume feedback (US-15). Also used as the Gemini response schema.
+class ResumeImprovement(BaseModel):
+    section: str
+    issue: str
+    suggestion: str
+
+
+class ResumeFeedbackResponse(BaseModel):
+    overall_score: int
+    summary: str
+    strengths: list[str]
+    improvements: list[ResumeImprovement]
+    missing_sections: list[str]
+
+    @field_validator("overall_score")
+    @classmethod
+    def clamp_score(cls, value):
+        return max(0, min(100, value))
+
+
+# AI job matching (US-16). AIJobMatchList is the Gemini response schema.
+class AIJobMatch(BaseModel):
+    job_ref: str
+    match_score: int
+    matching_skills: list[str]
+    missing_skills: list[str]
+    reason: str
+
+    @field_validator("match_score")
+    @classmethod
+    def clamp_score(cls, value):
+        return max(0, min(100, value))
+
+
+class AIJobMatchList(BaseModel):
+    matches: list[AIJobMatch]
+
+
+class JobMatch(BaseModel):
+    posting_id: str
+    title: str
+    company_name: str
+    location: str
+    employment_type: str
+    description: str
+    match_score: int
+    matching_skills: list[str]
+    missing_skills: list[str]
+    reason: str
+
+
+class JobMatchesResponse(BaseModel):
+    matches: list[JobMatch]
+    message: str | None = None

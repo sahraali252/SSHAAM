@@ -1,6 +1,70 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./ResumeUpload.css";
+import { getResumeFeedback } from "../services/ai";
+
+const scoreLevel = (score) => (score >= 75 ? "high" : score >= 50 ? "medium" : "low");
+
+// US-15: shows AI feedback as cards so the user can review it before editing their CV
+function AiFeedback({ feedback }) {
+  const strengths = feedback.strengths || [];
+  const improvements = feedback.improvements || [];
+  const missingSections = feedback.missing_sections || [];
+
+  return (
+    <div className="ai-feedback-results">
+      <div className="ai-score-card">
+        <div
+          className={`ai-score ai-score-${scoreLevel(feedback.overall_score)}`}
+          aria-label={`Overall score ${feedback.overall_score} out of 100`}
+        >
+          {feedback.overall_score}
+          <span>/100</span>
+        </div>
+        <p>{feedback.summary}</p>
+      </div>
+
+      {strengths.length > 0 && (
+        <div className="ai-feedback-card">
+          <h3>Strengths</h3>
+          <ul>
+            {strengths.map((strength, index) => (
+              <li key={`${index}-${strength}`}>{strength}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {improvements.length > 0 && (
+        <div className="ai-feedback-card">
+          <h3>Suggested improvements</h3>
+          {improvements.map((item, index) => (
+            <div className="ai-improvement" key={`${item.section}-${index}`}>
+              <span className="ai-section-tag">{item.section}</span>
+              <p><strong>Issue:</strong> {item.issue}</p>
+              <p><strong>Suggestion:</strong> {item.suggestion}</p>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {missingSections.length > 0 && (
+        <div className="ai-feedback-card">
+          <h3>Missing sections</h3>
+          <div className="ai-tags">
+            {missingSections.map((section, index) => (
+              <span className="ai-section-tag" key={`${index}-${section}`}>{section}</span>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <p className="ai-disclaimer">
+        AI-generated suggestions can be wrong. Review them before changing your resume.
+      </p>
+    </div>
+  );
+}
 
 function ResumeUpload() {
   const navigate = useNavigate();
@@ -13,6 +77,27 @@ function ResumeUpload() {
   const [uploading, setUploading] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [inputKey, setInputKey] = useState(0);
+  const [feedback, setFeedback] = useState(null);
+  const [feedbackLoading, setFeedbackLoading] = useState(false);
+  const [feedbackError, setFeedbackError] = useState("");
+
+  const clearFeedback = () => {
+    setFeedback(null);
+    setFeedbackError("");
+  };
+
+  const handleGetFeedback = async () => {
+    clearFeedback();
+
+    try {
+      setFeedbackLoading(true);
+      setFeedback(await getResumeFeedback());
+    } catch (error) {
+      setFeedbackError(error.message);
+    } finally {
+      setFeedbackLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (!userId) {
@@ -86,6 +171,7 @@ function ResumeUpload() {
 
       setResume(data);
       setFile(null);
+      clearFeedback();
       setInputKey((currentKey) => currentKey + 1);
       setMessage(
         resume
@@ -148,6 +234,7 @@ function ResumeUpload() {
 
       setResume(null);
       setFile(null);
+      clearFeedback();
       setInputKey((currentKey) => currentKey + 1);
       setMessage("Your resume was deleted.");
     } catch {
@@ -222,6 +309,38 @@ function ResumeUpload() {
                 <span>📄</span>
                 <h2>No resume uploaded yet</h2>
                 <p>Choose a PDF below to add your first resume.</p>
+              </section>
+            )}
+
+            {resume && (
+              <section className="ai-feedback" aria-label="AI resume feedback">
+                <div className="ai-feedback-header">
+                  <div>
+                    <h2>AI resume feedback</h2>
+                    <p>
+                      Get suggestions from Google Gemini. Contact details are
+                      removed before your resume is analyzed.
+                    </p>
+                  </div>
+                  <button
+                    className="ai-feedback-button"
+                    type="button"
+                    onClick={handleGetFeedback}
+                    disabled={feedbackLoading}
+                  >
+                    {feedbackLoading ? "Analyzing..." : "Get AI Feedback"}
+                  </button>
+                </div>
+
+                {feedbackLoading && (
+                  <p className="ai-status" role="status">
+                    Analyzing your resume. This can take a few seconds…
+                  </p>
+                )}
+                {feedbackError && (
+                  <p className="ai-error" role="alert">{feedbackError}</p>
+                )}
+                {feedback && <AiFeedback feedback={feedback} />}
               </section>
             )}
 
