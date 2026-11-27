@@ -201,3 +201,16 @@
 .job-detail-actions .apply-button {
   margin-top: 0;
 }
+
+/* View Details and Share at the bottom of each job card (US-17) */
+.job-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: auto;
+}
+
+#root .job-card-actions .job-details-button {
+  margin-top: 0;
+}

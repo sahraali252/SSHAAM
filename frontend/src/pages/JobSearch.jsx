@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import "./JobSearch.css";
 import { parseApiDate } from "../utils/dates";
+import { getExternalJobUrl } from "../utils/shareJob";
 import ShareJobButton from "../components/ShareJobButton";
 
 // Recruiter postings use the same shape as external jobs in the list and details view.
@@ -142,6 +143,20 @@ function JobSearch() {
     return locations.join(", ");
   };
 
+  // US-17: recruiter postings share their /jobs?posting=<id> link; external
+  // Himalayas jobs share their own himalayas.app page, or no button without one.
+  const renderShareButton = (job) => {
+    if (job.direct) return <ShareJobButton posting={job} />;
+    const externalUrl = getExternalJobUrl(job);
+    if (!externalUrl) return null;
+    return (
+      <ShareJobButton
+        posting={{ id: job.guid, title: job.title, company_name: job.companyName, location: formatLocation(job) }}
+        url={externalUrl}
+      />
+    );
+  };
+
   // Display details of the selected job
   if (detailJob) {
     return (
@@ -213,8 +228,7 @@ function JobSearch() {
             >
               Apply for this job
             </button>
-            {/* US-17: only CareerConnect recruiter postings can be shared */}
-            {detailJob.direct && <ShareJobButton posting={detailJob} />}
+            {renderShareButton(detailJob)}
           </div>
 
         </div>
@@ -313,12 +327,15 @@ function JobSearch() {
                     "No description available."}
                 </p>
 
-                <button
-                  className="job-details-button"
-                  onClick={() => setSelectedJob(job)}
-                >
-                  View Details
-                </button>
+                <div className="job-card-actions">
+                  <button
+                    className="job-details-button"
+                    onClick={() => setSelectedJob(job)}
+                  >
+                    View Details
+                  </button>
+                  {renderShareButton(job)}
+                </div>
               </div>
             ))}
         </div>

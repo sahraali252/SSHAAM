@@ -4,14 +4,16 @@ import "./ShareJobButton.css";
 
 const COPY_MESSAGE_MS = 2000;
 
-// US-17: share a recruiter posting by copying its link, by email or on LinkedIn
-export default function ShareJobButton({ posting }) {
+// US-17: share a job by copying its link, by email or on LinkedIn.
+// Recruiter postings use their /jobs?posting=<id> link; pass `url` to share a
+// ready-made link instead (e.g. an external Himalayas job page).
+export default function ShareJobButton({ posting, url: shareUrl }) {
   const [open, setOpen] = useState(false);
   const [status, setStatus] = useState("");
   const wrapperRef = useRef(null);
   const triggerRef = useRef(null);
   const timerRef = useRef(null);
-  const url = getShareUrl(posting);
+  const url = shareUrl || getShareUrl(posting);
 
   // Close on outside click or Escape while the menu is open.
   useEffect(() => {
